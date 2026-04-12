@@ -1,0 +1,6 @@
+@DBS_Task_HostAddress = http://localhost:5119
+
+GET {{DBS_Task_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

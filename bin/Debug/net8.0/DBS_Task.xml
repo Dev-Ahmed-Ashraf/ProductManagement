@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DBS_Task</name>
+    </assembly>
+    <members>
+        <member name="M:DBS_Task.API.Controllers.ProductController.CreateProduct(DBS_Task.Application.Contracts.CreateProductContract)">
+            <summary>
+            Creates a new product using the specified product details.
+            </summary>
+        </member>
+        <member name="M:DBS_Task.API.Controllers.ProductController.GetAllProducts(DBS_Task.Application.Contracts.GetProductsQueryContract)">
+            <summary>
+            Retrieves a paginated list of products that match the specified query parameters.
+            </summary>
+        </member>
+        <member name="M:DBS_Task.API.Controllers.ProductController.Delete(System.Int32)">
+            <summary>
+            Soft deletes a product by its ID
+            </summary>
+            <param name="id">The ID of the product to delete.</param>
+        </member>
+        <member name="T:DBS_Task.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:DBS_Task.Migrations.Add_SoftDelete_Props">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.Add_SoftDelete_Props.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.Add_SoftDelete_Props.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.Add_SoftDelete_Props.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
