@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DBS_Task")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a178d6f963e5ab7b9e852288f6fea82363509e66")]
 [assembly: System.Reflection.AssemblyProductAttribute("DBS_Task")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DBS_Task")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
