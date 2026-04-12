@@ -25,10 +25,7 @@ namespace DBS_Task.Infrastructure.Data
             // Apply configurations first
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
-            // Apply Global Query Filter for SoftDeleteEntity
-            //modelBuilder.Entity<Product>()
-            //    .HasQueryFilter(e => !e.IsDeleted);
-
+            // Apply the soft delete query filter
             modelBuilder.ApplySoftDeleteQueryFilter();
         }
 
