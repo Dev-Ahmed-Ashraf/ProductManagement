@@ -1,7 +1,10 @@
-﻿using DBS_Task.Application.Common;
+﻿using DBS_Task.API.Responses;
+using DBS_Task.Application.Common;
 using DBS_Task.Application.Contracts;
 using DBS_Task.Application.DTOs.Product;
+using DBS_Task.Application.DTOs.ProductStatusHistory;
 using DBS_Task.Domain.Entities;
+using DBS_Task.Domain.Enums;
 
 namespace DBS_Task.Application.Services
 {
@@ -10,5 +13,6 @@ namespace DBS_Task.Application.Services
         Task<ProductResponseDto> CreateProductAsync(CreateProductContract createProductDto);
         Task<PaginatedResult<ProductResponseDto>> GetAllProductsAsync(GetProductsQueryContract query);
         Task<bool> SoftDeleteProductAsync(int productId);
+        Task<ApiResponse<ChangeProductStatusResponseDto>> ChangeProductStatus(int productId, ProductStatus status);
     }
 }

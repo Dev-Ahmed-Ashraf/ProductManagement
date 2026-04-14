@@ -1,6 +1,7 @@
 using AutoMapper;
 using DBS_Task.Application.Contracts;
 using DBS_Task.Application.DTOs.Product;
+using DBS_Task.Application.DTOs.ProductStatusHistory;
 using DBS_Task.Domain.Entities;
 
 namespace DBS_Task.Application.Mappings
@@ -15,6 +16,10 @@ namespace DBS_Task.Application.Mappings
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore());
 
             CreateMap<Product, ProductResponseDto>();
+
+            // Added mapping logic for ProductStatusHistory -> DTO
+            CreateMap<ProductStatusHistory, ProductStatusHistoriesResponseDto>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name));
         }
     }
 }

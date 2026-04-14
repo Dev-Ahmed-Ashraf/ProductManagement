@@ -61,6 +61,7 @@ namespace DBS_Task.Infrastructure.Configurations
             // DeleteAt
             builder.Property(p => p.DeletedAt)
                    .IsRequired(false);
+           
         }
     }
 }

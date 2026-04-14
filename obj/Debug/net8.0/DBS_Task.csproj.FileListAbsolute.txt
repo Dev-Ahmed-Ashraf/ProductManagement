@@ -149,3 +149,4 @@ D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.Depen
 D:\DBS\DBS_Tasks\DBS_Task\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\DBS_Task.xml
 D:\DBS\DBS_Tasks\DBS_Task\obj\Debug\net8.0\DBS_Task.xml
+D:\DBS\DBS_Tasks\DBS_Task\obj\Debug\net8.0\DBS_Task.sourcelink.json

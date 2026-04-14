@@ -10,6 +10,7 @@ namespace DBS_Task.Infrastructure.Data
         private readonly AuditInterceptor _auditInterceptor;
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductStatusHistory> ProductStatusHistories { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

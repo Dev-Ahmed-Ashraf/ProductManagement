@@ -13,6 +13,7 @@ namespace DBS_Task.Application.Common
         {
             _currentUserService = currentUserService;
         }
+
         public override InterceptionResult<int> SavingChanges(
             DbContextEventData eventData, 
             InterceptionResult<int> result)
@@ -38,33 +39,41 @@ namespace DBS_Task.Application.Common
 
             foreach (var entry in entries)
             {
-                if (entry.Entity is not SoftDeleteEntity entity)
-                    continue;
-
-                // Added
-                if (entry.State == EntityState.Added)
+                // 1. Process Auditable Entities (This covers both Product and ProductStatusHistory)
+                if (entry.Entity is AuditableEntity auditableEntity)
                 {
-                    entry.Property(nameof(AuditableEntity.CreatedAt)).CurrentValue = DateTime.UtcNow;
-                    entry.Property(nameof(AuditableEntity.CreatedBy)).CurrentValue = _currentUserService.UserName;
+                    // Added
+                    if (entry.State == EntityState.Added)
+                    {
+                        entry.Property(nameof(AuditableEntity.CreatedAt)).CurrentValue = DateTime.UtcNow;
+                        entry.Property(nameof(AuditableEntity.CreatedBy)).CurrentValue = _currentUserService.UserName;
+                    }
+
+                    // Modified
+                    if (entry.State == EntityState.Modified)
+                    {
+                        entry.Property(nameof(AuditableEntity.UpdatedAt)).CurrentValue = DateTime.UtcNow;
+                        entry.Property(nameof(AuditableEntity.UpdatedBy)).CurrentValue = _currentUserService.UserName;
+                    }
                 }
 
-                // Modified
-                if (entry.State == EntityState.Modified)
+                // 2. Process Soft Delete Entities specifically (This covers Product, but skips ProductStatusHistory)
+                if (entry.Entity is SoftDeleteEntity softDeleteEntity)
                 {
-                    entry.Property(nameof(AuditableEntity.UpdatedAt)).CurrentValue = DateTime.UtcNow;
-                    entry.Property(nameof(AuditableEntity.UpdatedBy)).CurrentValue = _currentUserService.UserName;
-                }
+                    if (entry.State == EntityState.Deleted)
+                    {
+                        // Change state to modified so the record isn't actually deleted
+                        entry.State = EntityState.Modified;
 
-                // Soft Delete
-                if (entry.State == EntityState.Deleted)
-                {
-                    entry.State = EntityState.Modified;
-
-                    entry.Property(nameof(SoftDeleteEntity.IsDeleted)).CurrentValue = true;
-                    entry.Property(nameof(SoftDeleteEntity.DeletedAt)).CurrentValue = DateTime.UtcNow;
+                        entry.Property(nameof(SoftDeleteEntity.IsDeleted)).CurrentValue = true;
+                        entry.Property(nameof(SoftDeleteEntity.DeletedAt)).CurrentValue = DateTime.UtcNow;
+                        
+                        // We also need to update the audit fields since it's technically a "modification"
+                        entry.Property(nameof(AuditableEntity.UpdatedAt)).CurrentValue = DateTime.UtcNow;
+                        entry.Property(nameof(AuditableEntity.UpdatedBy)).CurrentValue = _currentUserService.UserName;
+                    }
                 }
             }
         }
-
     }
 }

@@ -1,11 +1,17 @@
 ﻿using AutoMapper;
+using DBS_Task.API.Responses;
 using DBS_Task.Application.Common;
 using DBS_Task.Application.Contracts;
 using DBS_Task.Application.DTOs.Product;
+using DBS_Task.Application.DTOs.ProductStatusHistory;
 using DBS_Task.Application.Services;
 using DBS_Task.Domain.Entities;
+using DBS_Task.Domain.Enums;
 using DBS_Task.Infrastructure.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
 
 namespace DBS_Task.Infrastructure.Services
 {
@@ -19,6 +25,8 @@ namespace DBS_Task.Infrastructure.Services
             _dbContext = dbContext;
             _mapper = mapper;
         }
+
+
         public async Task<ProductResponseDto> CreateProductAsync(CreateProductContract createProductDto)
         {
             var product = _mapper.Map<Product>(createProductDto);
@@ -77,5 +85,31 @@ namespace DBS_Task.Infrastructure.Services
 
             return true;
         }
+
+        public async Task<ApiResponse<ChangeProductStatusResponseDto>> ChangeProductStatus(int productId, ProductStatus newStatus)
+        {
+            // Validate product exists
+            var product = await _dbContext.Products.FindAsync(productId);
+
+            if (product is null)
+                return ApiResponse<ChangeProductStatusResponseDto>.FailureResponse($"Product with ID {productId} was not found.", 404);
+
+            var statusChangeHistory = product.ChangeStatus(newStatus);
+
+            // Validate same status
+            if (statusChangeHistory is null)
+                return ApiResponse<ChangeProductStatusResponseDto>.FailureResponse($"Product is already set to '{newStatus}'. No change was made.", 400);
+
+            await _dbContext.SaveChangesAsync();
+
+            var responseDto = new ChangeProductStatusResponseDto
+            {
+                ProductId = product.Id,
+                OldStatus = statusChangeHistory.OldStatus,
+                NewStatus = statusChangeHistory.NewStatus,
+            };
+
+            return ApiResponse<ChangeProductStatusResponseDto>.SuccessResponse(responseDto, 200, $"Product status updated to '{newStatus}' successfully.");
+        }  
     }
 }

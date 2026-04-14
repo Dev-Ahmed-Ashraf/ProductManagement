@@ -3,6 +3,7 @@ using DBS_Task.Application.Common;
 using DBS_Task.Application.Contracts;
 using DBS_Task.Application.DTOs.Product;
 using DBS_Task.Application.Services;
+using DBS_Task.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DBS_Task.API.Controllers
@@ -27,7 +28,7 @@ namespace DBS_Task.API.Controllers
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductContract request)
         {
             var product = await _productService.CreateProductAsync(request);
-            var response = ApiResponse<ProductResponseDto>.SuccessResponse(product, "Product created successfully.");
+            var response = ApiResponse<ProductResponseDto>.SuccessResponse(product, 201, "Product created successfully.");
             return Created( "" , response);  
         }
 
@@ -39,7 +40,7 @@ namespace DBS_Task.API.Controllers
         public async Task<IActionResult> GetAllProducts([FromQuery] GetProductsQueryContract query)
         {
             var products = await _productService.GetAllProductsAsync(query);
-            var response = ApiResponse<PaginatedResult<ProductResponseDto>>.SuccessResponse(products, "Products retrieved successfully.");
+            var response = ApiResponse<PaginatedResult<ProductResponseDto>>.SuccessResponse(products, 200, "Products retrieved successfully.");
             return Ok(response);
         }
 
@@ -55,9 +56,20 @@ namespace DBS_Task.API.Controllers
             var result = await _productService.SoftDeleteProductAsync(id);
 
             if (!result)
-                return NotFound(ApiResponse<object>.FailureResponse("Product not found or already deleted."));
+                return NotFound(ApiResponse<object>.FailureResponse("Product not found or already deleted.", 404));
 
-            return Ok(ApiResponse<object>.SuccessResponse(null, "Product deleted successfully."));
+            return Ok(ApiResponse<object>.SuccessResponse(null, 200, "Product deleted successfully."));
+        }
+
+        [ProducesResponseType(typeof(ApiResponse<ChangeProductStatusResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<ChangeProductStatusResponseDto>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<ChangeProductStatusResponseDto>), StatusCodes.Status404NotFound)]
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> ChangeProductStatus(int id, [FromBody] ChangeProductStatusContract request)
+        {
+            var result = await _productService.ChangeProductStatus(id, request.Status);
+
+            return StatusCode((int)result.StatusCode, result);  
         }
     }
 }

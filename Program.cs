@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductStatusHistoryService, ProductStatusHistoryService>();
 builder.Services.AddScoped<AuditInterceptor>();
 
 builder.Services.AddHttpContextAccessor();

@@ -44,5 +44,17 @@
         <member name="M:DBS_Task.Migrations.Add_SoftDelete_Props.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:DBS_Task.Migrations.AddStatusPropHistoryEntity">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.AddStatusPropHistoryEntity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.AddStatusPropHistoryEntity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:DBS_Task.Migrations.AddStatusPropHistoryEntity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
