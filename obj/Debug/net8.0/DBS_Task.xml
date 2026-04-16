@@ -4,12 +4,12 @@
         <name>DBS_Task</name>
     </assembly>
     <members>
-        <member name="M:DBS_Task.API.Controllers.ProductController.CreateProduct(DBS_Task.Application.Contracts.CreateProductContract)">
+        <member name="M:DBS_Task.API.Controllers.ProductController.CreateProduct(DBS_Task.Application.Products.Commands.CreateProduct.CreateProductCommand)">
             <summary>
             Creates a new product using the specified product details.
             </summary>
         </member>
-        <member name="M:DBS_Task.API.Controllers.ProductController.GetAllProducts(DBS_Task.Application.Contracts.GetProductsQueryContract)">
+        <member name="M:DBS_Task.API.Controllers.ProductController.GetAllProducts(DBS_Task.Contracts.GetProductsQueryContract)">
             <summary>
             Retrieves a paginated list of products that match the specified query parameters.
             </summary>
@@ -18,7 +18,16 @@
             <summary>
             Soft deletes a product by its ID
             </summary>
-            <param name="id">The ID of the product to delete.</param>
+        </member>
+        <member name="M:DBS_Task.API.Controllers.ProductController.ChangeProductStatus(System.Int32,DBS_Task.Contracts.ChangeProductStatusContract)">
+            <summary>
+            Updates the status of the specified product.
+            </summary>
+        </member>
+        <member name="M:DBS_Task.API.Controllers.ProductStatusHistoriesController.GetProductStatusHistories(DBS_Task.Contracts.GetProductStatusHistoriesQueryContract)">
+            <summary>
+            Retrieves a paginated list of product status history records that match the specified filter criteria.
+            </summary>
         </member>
         <member name="T:DBS_Task.Migrations.InitialMigration">
             <inheritdoc />

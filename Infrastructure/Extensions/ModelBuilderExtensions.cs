@@ -1,4 +1,4 @@
-﻿using DBS_Task.Domain.Entities;
+﻿using DBS_Task.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

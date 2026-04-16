@@ -8,14 +8,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "DBS_Task.Application.Contracts.CreateProductContract",
+        "Name": "command",
+        "Type": "DBS_Task.Application.Products.Commands.CreateProduct.CreateProductCommand",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "DBS_Task.API.Responses.ApiResponse\u00601[[DBS_Task.Application.DTOs.Product.ProductResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[DBS_Task.Application.DTOs.Product.ProductResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -24,7 +24,7 @@
         "StatusCode": 201
       },
       {
-        "Type": "DBS_Task.API.Responses.ApiResponse\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[DBS_Task.Application.DTOs.Product.ProductResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -75,7 +75,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "DBS_Task.API.Responses.ApiResponse\u00601[[DBS_Task.Application.Common.PaginatedResult\u00601[[DBS_Task.Application.DTOs.Product.ProductResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[DBS_Task.Application.Common.Results.PaginatedResult\u00601[[DBS_Task.Application.DTOs.Product.ProductResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -101,7 +101,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "DBS_Task.API.Responses.ApiResponse\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -110,7 +110,7 @@
         "StatusCode": 200
       },
       {
-        "Type": "DBS_Task.API.Responses.ApiResponse\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -135,13 +135,13 @@
       },
       {
         "Name": "request",
-        "Type": "DBS_Task.Application.Contracts.ChangeProductStatusContract",
+        "Type": "DBS_Task.Contracts.ChangeProductStatusContract",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "DBS_Task.API.Responses.ApiResponse\u00601[[DBS_Task.Application.DTOs.Product.ChangeProductStatusResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[DBS_Task.Application.DTOs.ProductStatusHistory.ChangeProductStatusResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -150,7 +150,7 @@
         "StatusCode": 200
       },
       {
-        "Type": "DBS_Task.API.Responses.ApiResponse\u00601[[DBS_Task.Application.DTOs.Product.ChangeProductStatusResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[DBS_Task.Application.DTOs.ProductStatusHistory.ChangeProductStatusResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -159,7 +159,7 @@
         "StatusCode": 400
       },
       {
-        "Type": "DBS_Task.API.Responses.ApiResponse\u00601[[DBS_Task.Application.DTOs.Product.ChangeProductStatusResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[DBS_Task.Application.DTOs.ProductStatusHistory.ChangeProductStatusResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -213,6 +213,16 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "DBS_Task.Application.Common.Results.ApiResponse\u00601[[DBS_Task.Application.Common.Results.PaginatedResult\u00601[[DBS_Task.Application.DTOs.ProductStatusHistory.ProductStatusHistoriesResponseDto, DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], DBS_Task, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

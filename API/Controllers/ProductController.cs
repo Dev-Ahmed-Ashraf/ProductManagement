@@ -1,9 +1,13 @@
-﻿using DBS_Task.API.Responses;
-using DBS_Task.Application.Common;
-using DBS_Task.Application.Contracts;
+﻿using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.Product;
-using DBS_Task.Application.Services;
-using DBS_Task.Domain.Enums;
+using DBS_Task.Application.DTOs.ProductStatusHistory;
+using DBS_Task.Application.Products.Commands.ChangeProductStatus;
+using DBS_Task.Application.Products.Commands.CreateProduct;
+using DBS_Task.Application.Products.Commands.DeleteProduct;
+using DBS_Task.Application.Products.Queries.GetAllProducts;
+using DBS_Task.Contracts;
+using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DBS_Task.API.Controllers
@@ -12,11 +16,11 @@ namespace DBS_Task.API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly IMediator _mediator;
 
-        public ProductController(IProductService productService)
+        public ProductController(IMediator mediator)
         {
-            _productService = productService;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -24,12 +28,11 @@ namespace DBS_Task.API.Controllers
         /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<ProductResponseDto>), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductContract request)
+        [ProducesResponseType(typeof(ApiResponse<ProductResponseDto>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
         {
-            var product = await _productService.CreateProductAsync(request);
-            var response = ApiResponse<ProductResponseDto>.SuccessResponse(product, 201, "Product created successfully.");
-            return Created( "" , response);  
+            var product = await _mediator.Send(command);
+            return StatusCode((int)product.StatusCode, product);
         }
 
         /// <summary>
@@ -39,35 +42,45 @@ namespace DBS_Task.API.Controllers
         [ProducesResponseType(typeof(ApiResponse<PaginatedResult<ProductResponseDto>>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllProducts([FromQuery] GetProductsQueryContract query)
         {
-            var products = await _productService.GetAllProductsAsync(query);
-            var response = ApiResponse<PaginatedResult<ProductResponseDto>>.SuccessResponse(products, 200, "Products retrieved successfully.");
-            return Ok(response);
+            var filters = new GetAllProductsQuery(
+                query.Name,
+                query.Description,
+                query.Price,
+                query.Quantity,
+                query.PageNumber,
+                query.PageSize
+            );
+
+            var products = await _mediator.Send(filters);
+            return StatusCode((int)products.StatusCode, products);
         }
+
 
         /// <summary>
         /// Soft deletes a product by its ID
         /// </summary>
-        /// <param name="id">The ID of the product to delete.</param>
-        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var result = await _productService.SoftDeleteProductAsync(id);
+            var command = new DeleteProductCommand(id);
+            var result = await _mediator.Send(command);
 
-            if (!result)
-                return NotFound(ApiResponse<object>.FailureResponse("Product not found or already deleted.", 404));
-
-            return Ok(ApiResponse<object>.SuccessResponse(null, 200, "Product deleted successfully."));
+            return StatusCode((int)result.StatusCode, result);
         }
 
+        /// <summary>
+        /// Updates the status of the specified product.
+        /// </summary>
         [ProducesResponseType(typeof(ApiResponse<ChangeProductStatusResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<ChangeProductStatusResponseDto>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse<ChangeProductStatusResponseDto>), StatusCodes.Status404NotFound)]
         [HttpPatch("{id}/status")]
-        public async Task<IActionResult> ChangeProductStatus(int id, [FromBody] ChangeProductStatusContract request)
+        public async Task<IActionResult> ChangeProductStatus([FromRoute] int id, [FromBody] ChangeProductStatusContract request)
         {
-            var result = await _productService.ChangeProductStatus(id, request.Status);
+            var command = new ChangeProductStatusCommand(id, request.newStatus);
+            var result = await _mediator.Send(command);
 
             return StatusCode((int)result.StatusCode, result);  
         }

@@ -1,9 +1,8 @@
-﻿using DBS_Task.API.Responses;
-using DBS_Task.Application.Common;
-using DBS_Task.Application.Contracts;
+﻿using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.ProductStatusHistory;
-using DBS_Task.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
+using DBS_Task.Application.ProductStatusHistories.Queries.GetAllStatusHistories;
+using DBS_Task.Contracts;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DBS_Task.API.Controllers
@@ -12,20 +11,32 @@ namespace DBS_Task.API.Controllers
     [ApiController]
     public class ProductStatusHistoriesController : ControllerBase
     {
-        private readonly IProductStatusHistoryService _productStatusHistoryService;
+        private readonly IMediator _mediator;
 
-        public ProductStatusHistoriesController(IProductStatusHistoryService productStatusHistoryService)
+        public ProductStatusHistoriesController(IMediator mediator)
         {
-            _productStatusHistoryService = productStatusHistoryService;
+            _mediator = mediator;
         }
 
+        /// <summary>
+        /// Retrieves a paginated list of product status history records that match the specified filter criteria.
+        /// </summary>
+        [ProducesResponseType(typeof(ApiResponse<PaginatedResult<ProductStatusHistoriesResponseDto>>), StatusCodes.Status200OK)]
         [HttpGet]
-        public async Task<IActionResult> GetProductStatusHistories([FromQuery] GetProductStatusHistoriesQueryContract query)
+        public async Task<IActionResult> GetProductStatusHistories([FromQuery] GetProductStatusHistoriesQueryContract request)
         {
-            var histories = await _productStatusHistoryService.GetProductStatusHistoriesAsync(query);
+            var query = new GetProductStatusHistoriesQuery(
+                request.ProductId,
+                request.OldStatus,
+                request.NewStatus,
+                request.FromDate,
+                request.ToDate,
+                request.PageNumber,
+                request.PageSize
+            );
 
-            var response = ApiResponse<PaginatedResult<ProductStatusHistoriesResponseDto>>.SuccessResponse(histories, 200, "Product Status History Retrieved Successfully");
-            return Ok(response);
+            var response = await _mediator.Send(query);
+            return StatusCode((int)response.StatusCode, response);
         }
     }
 }

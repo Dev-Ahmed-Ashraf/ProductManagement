@@ -150,3 +150,9 @@ D:\DBS\DBS_Tasks\DBS_Task\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\DBS_Task.xml
 D:\DBS\DBS_Tasks\DBS_Task\obj\Debug\net8.0\DBS_Task.xml
 D:\DBS\DBS_Tasks\DBS_Task\obj\Debug\net8.0\DBS_Task.sourcelink.json
+D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\FluentValidation.dll
+D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
+D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\MediatR.dll
+D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\MediatR.Contracts.dll
+D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
+D:\DBS\DBS_Tasks\DBS_Task\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll

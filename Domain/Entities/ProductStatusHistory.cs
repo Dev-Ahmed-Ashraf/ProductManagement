@@ -1,4 +1,5 @@
-﻿using DBS_Task.Domain.Enums;
+﻿using DBS_Task.Domain.Entities.Common;
+using DBS_Task.Domain.Enums;
 
 namespace DBS_Task.Domain.Entities
 {

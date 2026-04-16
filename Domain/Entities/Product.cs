@@ -1,4 +1,5 @@
 ﻿
+using DBS_Task.Domain.Entities.Common;
 using DBS_Task.Domain.Enums;
 using System.Runtime.CompilerServices;
 
@@ -31,13 +32,13 @@ namespace DBS_Task.Domain.Entities
             var oldStatus = Status;
             Status = newStatus;
 
-            var statusistory =  new ProductStatusHistory(
+            var statushistory =  new ProductStatusHistory(
                 productId: Id,
                 oldStatus: oldStatus,
                 newStatus: newStatus
             );
-            _statusHistories.Add(statusistory);
-            return statusistory;
+            _statusHistories.Add(statushistory);
+            return statushistory;
         }
     }
 }

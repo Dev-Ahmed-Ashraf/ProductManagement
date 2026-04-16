@@ -1,4 +1,4 @@
-﻿using DBS_Task.Application.Interfaces;
+﻿using DBS_Task.Application.Common.Interfaces;
 
 namespace DBS_Task.Infrastructure.Services
 {
