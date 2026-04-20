@@ -1,38 +1,30 @@
 ﻿using DBS_Task.Domain.Entities;
 using DBS_Task.Infrastructure.Data.Interceptors;
 using DBS_Task.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DBS_Task.Infrastructure.Data.DBContext
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        private readonly AuditInterceptor _auditInterceptor;
-
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductStatusHistory> ProductStatusHistories { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, AuditInterceptor auditInterceptor) : base(options)
-        {
-            _auditInterceptor = auditInterceptor;
-        }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Call the base method first to ensure Identity configurations are applied
+            base.OnModelCreating(modelBuilder);
+
             // Apply configurations first
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
             // Apply the soft delete query filter
             modelBuilder.ApplySoftDeleteQueryFilter();
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.AddInterceptors(_auditInterceptor);
-        }   
     }
 }
