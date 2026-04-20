@@ -5,7 +5,7 @@ using MediatR;
 
 namespace DBS_Task.Application.Products.Queries.GetAllProducts
 {
-    public record GetAllProductsQuery(string? Name, string? Description, decimal? Price, int? Quantity, int PageNumber, int PageSize) 
+    public record GetAllProductsQuery(GetProductsQueryContract ProductsQueryContract) 
         : IRequest<ApiResponse<PaginatedResult<ProductResponseDto>>>
     {
     }

@@ -16,7 +16,7 @@ namespace DBS_Task.Application.Products.Commands.DeleteProduct
         public async Task<ApiResponse<bool>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             var existingProduct = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
-            if (existingProduct == null || existingProduct.IsDeleted)
+            if (existingProduct == null)
             {
                 return ApiResponse<bool>.FailureResponse("Product not found or already deleted.", 404);
             }

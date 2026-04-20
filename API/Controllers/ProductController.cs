@@ -5,6 +5,7 @@ using DBS_Task.Application.Products.Commands.ChangeProductStatus;
 using DBS_Task.Application.Products.Commands.CreateProduct;
 using DBS_Task.Application.Products.Commands.DeleteProduct;
 using DBS_Task.Application.Products.Queries.GetAllProducts;
+using DBS_Task.Application.Products.Queries.GetProductById;
 using DBS_Task.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -42,19 +43,25 @@ namespace DBS_Task.API.Controllers
         [ProducesResponseType(typeof(ApiResponse<PaginatedResult<ProductResponseDto>>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllProducts([FromQuery] GetProductsQueryContract query)
         {
-            var filters = new GetAllProductsQuery(
-                query.Name,
-                query.Description,
-                query.Price,
-                query.Quantity,
-                query.PageNumber,
-                query.PageSize
-            );
+            var filters = new GetAllProductsQuery(query);
 
             var products = await _mediator.Send(filters);
             return StatusCode((int)products.StatusCode, products);
         }
 
+        /// <summary>   
+        /// Retrieves a product and its history by the specified identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the product to retrieve.</param>
+        [ProducesResponseType(typeof(ApiResponse<ProductWHistoryResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<ProductWHistoryResponseDto>), StatusCodes.Status404NotFound)]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var query = new GetByIdQuery(id);
+            var product = await _mediator.Send(query);
+            return StatusCode((int)product.StatusCode, product);
+        }
 
         /// <summary>
         /// Soft deletes a product by its ID

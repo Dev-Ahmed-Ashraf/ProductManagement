@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DBS_Task.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace DBS_Task.Application.DTOs.Product
 {
@@ -8,5 +9,6 @@ namespace DBS_Task.Application.DTOs.Product
         public string? Description { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        }
+        public ProductStatus Status { get; set; }
+    }
 }
