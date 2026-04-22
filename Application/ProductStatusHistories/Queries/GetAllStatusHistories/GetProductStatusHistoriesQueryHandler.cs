@@ -20,34 +20,35 @@ namespace DBS_Task.Application.ProductStatusHistories.Queries.GetAllStatusHistor
             _mapper = mapper;
         }
 
-        public async Task<ApiResponse<PaginatedResult<ProductStatusHistoriesResponseDto>>> Handle(GetProductStatusHistoriesQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResult<ProductStatusHistoriesResponseDto>>> Handle(GetProductStatusHistoriesQuery query, CancellationToken cancellationToken)
         {
+            var request = query.HistoriesQueryContract;
             var queryable = _dbContext.ProductStatusHistories.AsNoTracking();
 
-            if (request.HistoriesQueryContract.ProductId.HasValue)
+            if (request.ProductId.HasValue)
             {
-                queryable = queryable.Where(p => p.ProductId == request.HistoriesQueryContract.ProductId.Value);
+                queryable = queryable.Where(p => p.ProductId == request.ProductId.Value);
             }
 
-            if (request.HistoriesQueryContract.OldStatus.HasValue)
+            if (request.OldStatus.HasValue)
             {
-                queryable = queryable.Where(p => p.OldStatus == request.HistoriesQueryContract.OldStatus.Value);
+                queryable = queryable.Where(p => p.OldStatus == request.OldStatus.Value);
             }
 
-            if (request.HistoriesQueryContract.NewStatus.HasValue)
+            if (request.NewStatus.HasValue)
             {
-                queryable = queryable.Where(p => p.NewStatus == request.HistoriesQueryContract.NewStatus.Value);
+                queryable = queryable.Where(p => p.NewStatus == request.NewStatus.Value);
             }
 
-            if (request.HistoriesQueryContract.FromDate.HasValue)
+            if (request.FromDate.HasValue)
             {
-                var fromDateMidnight = request.HistoriesQueryContract.FromDate.Value.Date;
+                var fromDateMidnight = request.FromDate.Value.Date;
                 queryable = queryable.Where(p => p.CreatedAt >= fromDateMidnight);
             }
 
-            if (request.HistoriesQueryContract.ToDate.HasValue)
+            if (request.ToDate.HasValue)
             {
-                var toDateNextMidnight = request.HistoriesQueryContract.ToDate.Value.Date.AddDays(1);
+                var toDateNextMidnight = request.ToDate.Value.Date.AddDays(1);
                 queryable = queryable.Where(p => p.CreatedAt < toDateNextMidnight);
             }
 
@@ -55,13 +56,13 @@ namespace DBS_Task.Application.ProductStatusHistories.Queries.GetAllStatusHistor
 
             var histories = await queryable
                 .OrderByDescending(p => p.CreatedAt)
-                .Skip((request.HistoriesQueryContract.PageNumber - 1) * request.HistoriesQueryContract.PageSize)
-                .Take(request.HistoriesQueryContract.PageSize)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .ProjectTo<ProductStatusHistoriesResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
             return ApiResponse<PaginatedResult<ProductStatusHistoriesResponseDto>>.SuccessResponse(
-                new PaginatedResult<ProductStatusHistoriesResponseDto>(histories, request.HistoriesQueryContract.PageNumber, request.HistoriesQueryContract.PageSize, totalCount), 200, "Product status histories retrieved successfully"
+                new PaginatedResult<ProductStatusHistoriesResponseDto>(histories, request.PageNumber, request.PageSize, totalCount), 200, "Product status histories retrieved successfully"
             );
         }
     }

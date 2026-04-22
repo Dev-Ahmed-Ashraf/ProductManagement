@@ -30,8 +30,9 @@ namespace DBS_Task.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<ProductResponseDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse<ProductResponseDto>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductContract contract)
         {
+            var command = new CreateProductCommand(contract);
             var product = await _mediator.Send(command);
             return StatusCode((int)product.StatusCode, product);
         }

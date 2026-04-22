@@ -18,9 +18,10 @@ namespace DBS_Task.Application.Products.Commands.CreateProduct
             _mapper = mapper;
         }
         public async Task<ApiResponse<ProductResponseDto>> Handle(
-            CreateProductCommand request,
+            CreateProductCommand command,
             CancellationToken cancellationToken)
         {
+            var request = command.CreateProductContract;
             var product = _mapper.Map<Product>(request);
 
             await _dbContext.Products.AddAsync(product, cancellationToken);

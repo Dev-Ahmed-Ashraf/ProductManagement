@@ -13,7 +13,7 @@ namespace DBS_Task.Infrastructure.Data.Seeders
 
             foreach (var roleName in AppRoles.AllRoles)
             {
-                // 1. Create Role if not exists
+                // Create Role if not exists
                 var roleExists = await roleManager.RoleExistsAsync(roleName);
                 if (!roleExists)
                 {
@@ -23,10 +23,10 @@ namespace DBS_Task.Infrastructure.Data.Seeders
 
                 var role = await roleManager.FindByNameAsync(roleName);
 
-                // 2. Get existing claims
+                // Get existing claims
                 var existingClaims = await roleManager.GetClaimsAsync(role);
 
-                // 3. Add missing claims
+                // Add missing claims
                 var claims = RoleClaimsMapping.Mapping[roleName];
 
                 // Only add claims that are not already associated with the role

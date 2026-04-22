@@ -17,33 +17,34 @@ namespace DBS_Task.Application.Products.Queries.GetAllProducts
             _dbContext = dbcontext;
             _mapper = mapper;
         }
-        public async Task<ApiResponse<PaginatedResult<ProductResponseDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PaginatedResult<ProductResponseDto>>> Handle(GetAllProductsQuery query, CancellationToken cancellationToken)
         {
+            var request = query.ProductsQueryContract;
             var queryable = _dbContext.Products.AsNoTracking();
 
-            if (!string.IsNullOrWhiteSpace(request.ProductsQueryContract.Name))
+            if (!string.IsNullOrWhiteSpace(request.Name))
             {
-                queryable = queryable.Where(p => p.Name.Contains(request.ProductsQueryContract.Name));
+                queryable = queryable.Where(p => p.Name.Contains(request.Name));
             }
-            if (!string.IsNullOrWhiteSpace(request.ProductsQueryContract.Description))
+            if (!string.IsNullOrWhiteSpace(request.Description))
             {
-                queryable = queryable.Where(p => p.Description != null && p.Description.Contains(request.ProductsQueryContract.Description));
+                queryable = queryable.Where(p => p.Description != null && p.Description.Contains(request.Description));
             }
-            if (request.ProductsQueryContract.Price.HasValue)
+            if (request.Price.HasValue)
             {
-                queryable = queryable.Where(p => p.Price == request.ProductsQueryContract.Price.Value);
+                queryable = queryable.Where(p => p.Price == request.Price.Value);
             }
-            if (request.ProductsQueryContract.Quantity.HasValue)
+            if (request.Quantity.HasValue)
             {
-                queryable = queryable.Where(p => p.Quantity == request.ProductsQueryContract.Quantity.Value);
+                queryable = queryable.Where(p => p.Quantity == request.Quantity.Value);
             }
 
             var totalCount = await queryable.CountAsync(cancellationToken);
 
             var products = await queryable
                 .OrderByDescending(p => p.CreatedAt)
-                .Skip((request.ProductsQueryContract.PageNumber - 1) * request.ProductsQueryContract.PageSize)
-                .Take(request.ProductsQueryContract.PageSize)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .ToListAsync();
 
             var productDtos = _mapper.Map<List<ProductResponseDto>>(products);
@@ -52,8 +53,8 @@ namespace DBS_Task.Application.Products.Queries.GetAllProducts
                     .SuccessResponse(
                         new PaginatedResult<ProductResponseDto>(
                             productDtos,
-                            request.ProductsQueryContract.PageNumber,
-                            request.ProductsQueryContract.PageSize,
+                            request.PageNumber,
+                            request.PageSize,
                             totalCount
                     ),
                         200,

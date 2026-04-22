@@ -13,7 +13,7 @@ namespace DBS_Task.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<CreateProductCommand, Product>()
+            CreateMap<CreateProductContract, Product>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore());
