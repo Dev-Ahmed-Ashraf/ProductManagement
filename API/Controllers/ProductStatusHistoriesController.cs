@@ -25,16 +25,7 @@ namespace DBS_Task.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductStatusHistories([FromQuery] GetProductStatusHistoriesQueryContract request)
         {
-            var query = new GetProductStatusHistoriesQuery(
-                request.ProductId,
-                request.OldStatus,
-                request.NewStatus,
-                request.FromDate,
-                request.ToDate,
-                request.PageNumber,
-                request.PageSize
-            );
-
+            var query = new GetProductStatusHistoriesQuery(request);
             var response = await _mediator.Send(query);
             return StatusCode((int)response.StatusCode, response);
         }

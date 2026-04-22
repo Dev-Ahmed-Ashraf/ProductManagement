@@ -1,4 +1,4 @@
-﻿using DBS_Task.Application.DTOs;
+﻿using DBS_Task.Application.DTOs.Base;
 using DBS_Task.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 

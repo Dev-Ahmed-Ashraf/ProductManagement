@@ -1,0 +1,13 @@
+﻿using DBS_Task.Application.DTOs.Base;
+
+namespace DBS_Task.Application.DTOs.User
+{
+    public class CreateUserResponseDto : AuditDto
+    {
+        public string Id { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string Role { get; set; }
+        public bool IsActive { get; set; }
+    }
+}

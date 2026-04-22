@@ -24,30 +24,30 @@ namespace DBS_Task.Application.ProductStatusHistories.Queries.GetAllStatusHistor
         {
             var queryable = _dbContext.ProductStatusHistories.AsNoTracking();
 
-            if (request.ProductId.HasValue)
+            if (request.HistoriesQueryContract.ProductId.HasValue)
             {
-                queryable = queryable.Where(p => p.ProductId == request.ProductId.Value);
+                queryable = queryable.Where(p => p.ProductId == request.HistoriesQueryContract.ProductId.Value);
             }
 
-            if (request.OldStatus.HasValue)
+            if (request.HistoriesQueryContract.OldStatus.HasValue)
             {
-                queryable = queryable.Where(p => p.OldStatus == request.OldStatus.Value);
+                queryable = queryable.Where(p => p.OldStatus == request.HistoriesQueryContract.OldStatus.Value);
             }
 
-            if (request.NewStatus.HasValue)
+            if (request.HistoriesQueryContract.NewStatus.HasValue)
             {
-                queryable = queryable.Where(p => p.NewStatus == request.NewStatus.Value);
+                queryable = queryable.Where(p => p.NewStatus == request.HistoriesQueryContract.NewStatus.Value);
             }
 
-            if (request.FromDate.HasValue)
+            if (request.HistoriesQueryContract.FromDate.HasValue)
             {
-                var fromDateMidnight = request.FromDate.Value.Date;
+                var fromDateMidnight = request.HistoriesQueryContract.FromDate.Value.Date;
                 queryable = queryable.Where(p => p.CreatedAt >= fromDateMidnight);
             }
 
-            if (request.ToDate.HasValue)
+            if (request.HistoriesQueryContract.ToDate.HasValue)
             {
-                var toDateNextMidnight = request.ToDate.Value.Date.AddDays(1);
+                var toDateNextMidnight = request.HistoriesQueryContract.ToDate.Value.Date.AddDays(1);
                 queryable = queryable.Where(p => p.CreatedAt < toDateNextMidnight);
             }
 
@@ -55,13 +55,13 @@ namespace DBS_Task.Application.ProductStatusHistories.Queries.GetAllStatusHistor
 
             var histories = await queryable
                 .OrderByDescending(p => p.CreatedAt)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.HistoriesQueryContract.PageNumber - 1) * request.HistoriesQueryContract.PageSize)
+                .Take(request.HistoriesQueryContract.PageSize)
                 .ProjectTo<ProductStatusHistoriesResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
             return ApiResponse<PaginatedResult<ProductStatusHistoriesResponseDto>>.SuccessResponse(
-                new PaginatedResult<ProductStatusHistoriesResponseDto>(histories, request.PageNumber, request.PageSize, totalCount), 200, "Product status histories retrieved successfully"
+                new PaginatedResult<ProductStatusHistoriesResponseDto>(histories, request.HistoriesQueryContract.PageNumber, request.HistoriesQueryContract.PageSize, totalCount), 200, "Product status histories retrieved successfully"
             );
         }
     }

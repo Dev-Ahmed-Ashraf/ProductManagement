@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DBS_Task.Application.DTOs
+namespace DBS_Task.Application.DTOs.Base
 {
     public class PaginationBaseDto
     {

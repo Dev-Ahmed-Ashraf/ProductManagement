@@ -1,9 +1,10 @@
-﻿using DBS_Task.Domain.Enums;
+﻿using DBS_Task.Application.DTOs.Base;
+using DBS_Task.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace DBS_Task.Application.DTOs.Product
 {
-        public class ProductResponseDto : ProductAuditDto
+        public class ProductResponseDto : AuditDto
         {
         public string Name { get; set; }
         public string? Description { get; set; }

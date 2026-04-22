@@ -10,7 +10,7 @@ namespace DBS_Task.Infrastructure.Data.DBContext
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductStatusHistory> ProductStatusHistories { get; set; }
-
+        public DbSet<UserWithRoleView> UserWithRoles { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
@@ -25,6 +25,12 @@ namespace DBS_Task.Infrastructure.Data.DBContext
 
             // Apply the soft delete query filter
             modelBuilder.ApplySoftDeleteQueryFilter();
+
+            modelBuilder.Entity<UserWithRoleView>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vw_UserWithRoles");
+            });
         }
     }
 }

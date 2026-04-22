@@ -4,8 +4,9 @@ namespace DBS_Task.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public string FullName {  get; private set; }
-        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-        public bool IsActive { get; private set; } = true;
+        public string FullName {  get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsActive { get; set; } = true;
+
     }
 }

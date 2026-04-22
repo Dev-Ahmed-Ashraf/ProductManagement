@@ -1,4 +1,4 @@
-﻿using DBS_Task.Application.DTOs;
+﻿using DBS_Task.Application.DTOs.Base;
 
 namespace DBS_Task.Contracts
 {

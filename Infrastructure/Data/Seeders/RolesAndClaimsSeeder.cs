@@ -29,6 +29,7 @@ namespace DBS_Task.Infrastructure.Data.Seeders
                 // 3. Add missing claims
                 var claims = RoleClaimsMapping.Mapping[roleName];
 
+                // Only add claims that are not already associated with the role
                 foreach (var claim in claims)
                 {
                     if (!existingClaims.Any(c => c.Type == "permission" && c.Value == claim))

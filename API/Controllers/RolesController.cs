@@ -1,7 +1,6 @@
 ﻿using DBS_Task.Application.Roles.Queries.GetAllRoles;
 using DBS_Task.Application.Roles.Queries.GetRoleClaims;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DBS_Task.API.Controllers
