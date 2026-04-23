@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Results;
+﻿using DBS_Task.Application.Common.Constants;
+using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.Product;
 using DBS_Task.Application.DTOs.ProductStatusHistory;
 using DBS_Task.Application.Products.Commands.ChangeProductStatus;
@@ -8,6 +9,7 @@ using DBS_Task.Application.Products.Queries.GetAllProducts;
 using DBS_Task.Application.Products.Queries.GetProductById;
 using DBS_Task.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +17,7 @@ namespace DBS_Task.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -30,6 +33,7 @@ namespace DBS_Task.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<ProductResponseDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse<ProductResponseDto>), StatusCodes.Status400BadRequest)]
+        [Authorize(Policy = AppClaims.ProductsCreate)]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductContract contract)
         {
             var command = new CreateProductCommand(contract);
@@ -42,6 +46,7 @@ namespace DBS_Task.API.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<PaginatedResult<ProductResponseDto>>), StatusCodes.Status200OK)]
+        [Authorize(Policy = AppClaims.ProductsView)]
         public async Task<IActionResult> GetAllProducts([FromQuery] GetProductsQueryContract query)
         {
             var filters = new GetAllProductsQuery(query);
@@ -57,6 +62,7 @@ namespace DBS_Task.API.Controllers
         [ProducesResponseType(typeof(ApiResponse<ProductWHistoryResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<ProductWHistoryResponseDto>), StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
+        [Authorize(Policy = AppClaims.ProductsView)]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var query = new GetByIdQuery(id);
@@ -70,6 +76,7 @@ namespace DBS_Task.API.Controllers
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
+        [Authorize(Policy = AppClaims.ProductsDelete)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var command = new DeleteProductCommand(id);
@@ -85,6 +92,7 @@ namespace DBS_Task.API.Controllers
         [ProducesResponseType(typeof(ApiResponse<ChangeProductStatusResponseDto>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse<ChangeProductStatusResponseDto>), StatusCodes.Status404NotFound)]
         [HttpPatch("{id}/status")]
+        [Authorize(Policy = AppClaims.ProductsChangeStatus)]
         public async Task<IActionResult> ChangeProductStatus([FromRoute] int id, [FromBody] ChangeProductStatusContract request)
         {
             var command = new ChangeProductStatusCommand(id, request.newStatus);

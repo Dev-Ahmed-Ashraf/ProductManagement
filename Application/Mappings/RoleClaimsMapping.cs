@@ -17,6 +17,7 @@ namespace DBS_Task.Application.Mappings
                     AppClaims.ProductsCreate,
                     AppClaims.ProductsDelete,
                     AppClaims.ProductsChangeStatus,
+                    AppClaims.ProductStatusHistoriesView,
                     AppClaims.UsersView,
                     AppClaims.UsersCreate,
                     AppClaims.StatisticsView
@@ -30,6 +31,7 @@ namespace DBS_Task.Application.Mappings
                     AppClaims.ProductsView,
                     AppClaims.ProductsCreate,
                     AppClaims.ProductsChangeStatus,
+                    //AppClaims.ProductStatusHistoriesView,
                     AppClaims.StatisticsView
                 }
             },
@@ -39,7 +41,9 @@ namespace DBS_Task.Application.Mappings
                 {
                     AppClaims.ProductsView,
                     AppClaims.ProductsCreate,
-                    AppClaims.ProductsChangeStatus
+                    AppClaims.ProductsChangeStatus,
+                    AppClaims.ProductStatusHistoriesView
+
                 }
             }
         };

@@ -1,14 +1,17 @@
-﻿using DBS_Task.Application.Common.Results;
+﻿using DBS_Task.Application.Common.Constants;
+using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.ProductStatusHistory;
 using DBS_Task.Application.ProductStatusHistories.Queries.GetAllStatusHistories;
 using DBS_Task.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DBS_Task.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductStatusHistoriesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -23,6 +26,7 @@ namespace DBS_Task.API.Controllers
         /// </summary>
         [ProducesResponseType(typeof(ApiResponse<PaginatedResult<ProductStatusHistoriesResponseDto>>), StatusCodes.Status200OK)]
         [HttpGet]
+        [Authorize(Policy = AppClaims.ProductStatusHistoriesView)]
         public async Task<IActionResult> GetProductStatusHistories([FromQuery] GetProductStatusHistoriesQueryContract request)
         {
             var query = new GetProductStatusHistoriesQuery(request);

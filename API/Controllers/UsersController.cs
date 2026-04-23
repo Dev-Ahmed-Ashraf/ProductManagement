@@ -1,8 +1,10 @@
-﻿using DBS_Task.Application.Users.Commands.CreateUser;
+﻿using DBS_Task.Application.Common.Constants;
+using DBS_Task.Application.Users.Commands.CreateUser;
 using DBS_Task.Application.Users.Queries.GetAllUsers;
 using DBS_Task.Application.Users.Queries.GetUserById;
 using DBS_Task.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,7 @@ namespace DBS_Task.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -25,6 +28,7 @@ namespace DBS_Task.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
+        [Authorize(Policy = AppClaims.UsersCreate)]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserContract contract)
         {
             var command = new CreateUserCommand(contract);
@@ -39,6 +43,7 @@ namespace DBS_Task.API.Controllers
         /// <returns></returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
+        [Authorize(Policy = AppClaims.UsersView)]
         public async Task<IActionResult> GetAllUsers([FromQuery] GetAllUsersContract contract)
         {
             var query = new GetAllUsersQuery(contract);
@@ -53,6 +58,7 @@ namespace DBS_Task.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
+        [Authorize(Policy = AppClaims.UsersView)]
         public async Task<IActionResult> GetUserById(string id)
         {
             var query = new GetUserByIdQuery(id);

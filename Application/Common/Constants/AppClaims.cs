@@ -7,6 +7,8 @@
         public const string ProductsDelete = "products:delete";
         public const string ProductsChangeStatus = "products:change-status";
 
+        public const string ProductStatusHistoriesView = "product-status-histories:view";
+
         public const string UsersView = "users:view";
         public const string UsersCreate = "users:create";
 
