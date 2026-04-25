@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace DBS_Task.Application.Auth.Commands
+namespace DBS_Task.Application.Auth.Commands.Login
 {
     public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
     {

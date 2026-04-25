@@ -1,4 +1,4 @@
-using DBS_Task.Application.Auth.Commands;
+using DBS_Task.Application.Auth.Commands.Login;
 using DBS_Task.Application.Common.Behaviors;
 using DBS_Task.Application.Common.Constants;
 using DBS_Task.Application.Common.Interfaces;
@@ -136,6 +136,13 @@ builder.Services
     .Bind(builder.Configuration.GetSection("JwtSettings"))
     .ValidateDataAnnotations()
     .ValidateOnStart();
+
+builder.Services
+.AddOptions<RefreshTokenSettings>()
+.Bind(
+ builder.Configuration.GetSection(
+   "RefreshTokenSettings"))
+.ValidateOnStart();
 
 var jwtSettings = builder.Configuration
     .GetSection("JwtSettings")

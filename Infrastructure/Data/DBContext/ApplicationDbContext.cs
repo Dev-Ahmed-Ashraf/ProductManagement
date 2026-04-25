@@ -10,6 +10,7 @@ namespace DBS_Task.Infrastructure.Data.DBContext
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductStatusHistory> ProductStatusHistories { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<UserWithRoleView> UserWithRoles { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

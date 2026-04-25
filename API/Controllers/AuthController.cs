@@ -1,4 +1,7 @@
 ﻿using DBS_Task.Application.Auth.Commands;
+using DBS_Task.Application.Auth.Commands.Login;
+using DBS_Task.Application.Auth.Commands.Logout;
+using DBS_Task.Application.Auth.Commands.RefreshToken;
 using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.Auth;
 using DBS_Task.Contracts;
@@ -32,6 +35,32 @@ namespace DBS_Task.API.Controllers
             var command = new LoginUserCommand(request);
             var result = await _mediator.Send(command);
 
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        /// <summary>
+        /// Handles a request to refresh an authentication token.
+        /// </summary>
+        [ProducesResponseType(typeof(ApiResponse<LoginResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<LoginResponseDto>), StatusCodes.Status400BadRequest)]
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestContract requestContract)
+        {
+            var command = new RefreshTokenCommand(requestContract);
+            var result = await _mediator.Send(command);
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        /// <summary>
+        /// Logs out the user by invalidating the specified refresh token.
+        /// </summary>
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] RefreshTokenRequestContract requestContract)
+        {
+            var command = new LogoutUserCommand(requestContract);
+            var result = await _mediator.Send(command);
             return StatusCode((int)result.StatusCode, result);
         }
     }

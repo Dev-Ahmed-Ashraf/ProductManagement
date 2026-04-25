@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace DBS_Task.Application.Auth.Commands
+namespace DBS_Task.Application.Auth.Commands.Login
 {
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, ApiResponse<LoginResponseDto>>
     {
@@ -40,8 +40,10 @@ namespace DBS_Task.Application.Auth.Commands
                 Email = user.Email,
                 Roles = result.Roles,
                 Claims = result.Claims,
-                Token = result.Token,
-                ExpiresAt = result.ExpiresAt
+                AccessToken = result.AccessToken,
+                AccessTokenExpiresAt = result.AccessTokenExpiresAt,
+                RefreshToken = result.RefreshToken,
+                RefreshTokenExpiresAt = result.RefreshTokenExpiresAt
             };
 
             return ApiResponse<LoginResponseDto>.SuccessResponse(response, 200, "User logged in successfully.");

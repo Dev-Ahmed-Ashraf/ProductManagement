@@ -9,7 +9,9 @@ namespace DBS_Task.Application.DTOs.Auth
         public string Email { get; set; }
         public List<string> Roles { get; set; }
         public List<string> Claims { get; set; }
-        public string Token { get; set; }
-        public DateTime ExpiresAt { get; set; }
+        public string AccessToken { get; set; }
+        public DateTime AccessTokenExpiresAt { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiresAt { get; set; }
     }
 }
