@@ -17,7 +17,7 @@ namespace DBS_Task.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -46,7 +46,7 @@ namespace DBS_Task.API.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<PaginatedResult<ProductResponseDto>>), StatusCodes.Status200OK)]
-        [Authorize(Policy = AppClaims.ProductsView)]
+        //[Authorize(Policy = AppClaims.ProductsView)]
         public async Task<IActionResult> GetAllProducts([FromQuery] GetProductsQueryContract query)
         {
             var filters = new GetAllProductsQuery(query);
