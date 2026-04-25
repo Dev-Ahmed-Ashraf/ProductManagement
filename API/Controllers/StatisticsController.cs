@@ -1,7 +1,7 @@
 ﻿using DBS_Task.Application.Common.Constants;
 using DBS_Task.Application.Common.Results;
+using DBS_Task.Application.CQRS.Statistics.Queries;
 using DBS_Task.Application.DTOs.Statistics;
-using DBS_Task.Application.Statistics.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

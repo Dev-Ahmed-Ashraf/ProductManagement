@@ -1,8 +1,8 @@
 ﻿using DBS_Task.Application.Common.Constants;
-using DBS_Task.Application.Users.Commands.CreateUser;
-using DBS_Task.Application.Users.Queries.GetAllUsers;
-using DBS_Task.Application.Users.Queries.GetUserById;
-using DBS_Task.Contracts;
+using DBS_Task.Application.CQRS.Users.Commands.CreateUser;
+using DBS_Task.Application.CQRS.Users.Queries.GetAllUsers;
+using DBS_Task.Application.CQRS.Users.Queries.GetUserById;
+using DBS_Task.Contracts.User;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

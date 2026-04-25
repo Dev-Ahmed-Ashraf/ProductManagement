@@ -2,8 +2,7 @@ using AutoMapper;
 using DBS_Task.Application.DTOs.Product;
 using DBS_Task.Application.DTOs.ProductStatusHistory;
 using DBS_Task.Application.DTOs.Roles;
-using DBS_Task.Application.Products.Commands.CreateProduct;
-using DBS_Task.Contracts;
+using DBS_Task.Contracts.Product;
 using DBS_Task.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 

@@ -1,7 +1,7 @@
-using DBS_Task.Application.Auth.Commands.Login;
 using DBS_Task.Application.Common.Behaviors;
 using DBS_Task.Application.Common.Constants;
 using DBS_Task.Application.Common.Interfaces;
+using DBS_Task.Application.CQRS.Auth.Commands.Login;
 using DBS_Task.Domain.Entities;
 using DBS_Task.Infrastructure.Data.DBContext;
 using DBS_Task.Infrastructure.Data.Interceptors;

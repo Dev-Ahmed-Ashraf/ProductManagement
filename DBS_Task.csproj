@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\ProductStatusHistories\Commands\" />
+    <Folder Include="Application\CQRS\ProductStatusHistories\Commands\" />
   </ItemGroup>
 
 </Project>

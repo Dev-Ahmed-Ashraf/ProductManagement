@@ -1,11 +1,11 @@
-﻿using DBS_Task.Application.Auth.Commands;
-using DBS_Task.Application.Auth.Commands.Login;
-using DBS_Task.Application.Auth.Commands.Logout;
-using DBS_Task.Application.Auth.Commands.RefreshToken;
-using DBS_Task.Application.Common.Results;
+﻿using DBS_Task.Application.Common.Results;
+using DBS_Task.Application.CQRS.Auth.Commands.Login;
+using DBS_Task.Application.CQRS.Auth.Commands.Logout;
+using DBS_Task.Application.CQRS.Auth.Commands.RefreshToken;
 using DBS_Task.Application.DTOs.Auth;
-using DBS_Task.Contracts;
+using DBS_Task.Contracts.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +57,7 @@ namespace DBS_Task.API.Controllers
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
         [HttpPost("logout")]
+        [Authorize]
         public async Task<IActionResult> Logout([FromBody] RefreshTokenRequestContract requestContract)
         {
             var command = new LogoutUserCommand(requestContract);

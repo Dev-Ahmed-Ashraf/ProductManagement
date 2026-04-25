@@ -1,8 +1,8 @@
 ﻿using DBS_Task.Application.Common.Constants;
 using DBS_Task.Application.Common.Results;
+using DBS_Task.Application.CQRS.ProductStatusHistories.Queries.GetAllStatusHistories;
 using DBS_Task.Application.DTOs.ProductStatusHistory;
-using DBS_Task.Application.ProductStatusHistories.Queries.GetAllStatusHistories;
-using DBS_Task.Contracts;
+using DBS_Task.Contracts.ProductHistory;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
