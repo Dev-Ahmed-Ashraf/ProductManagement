@@ -39,7 +39,7 @@ namespace DBS_Task.Infrastructure.Data.Interceptors
 
             foreach (var entry in entries)
             {
-                // 1. Process Auditable Entities (This covers both Product and ProductStatusHistory)
+                // Process Auditable Entities (This covers both Product and ProductStatusHistory)
                 if (entry.Entity is AuditableEntity auditableEntity)
                 {
                     // Added
@@ -57,7 +57,7 @@ namespace DBS_Task.Infrastructure.Data.Interceptors
                     }
                 }
 
-                // 2. Process Soft Delete Entities specifically (This covers Product, but skips ProductStatusHistory)
+                // Process Soft Delete Entities specifically (This covers Product, but skips ProductStatusHistory)
                 if (entry.Entity is SoftDeleteEntity softDeleteEntity)
                 {
                     if (entry.State == EntityState.Deleted)

@@ -39,8 +39,6 @@ namespace DBS_Task.API.Controllers
         /// <summary>
         /// Retrieves a paginated list of users.
         /// </summary>
-        /// <param name="contract"></param>
-        /// <returns></returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
         [Authorize(Policy = AppClaims.UsersView)]
