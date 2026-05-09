@@ -9,3 +9,4 @@ obj/
 *.user
 *.suo
 *.log
+/Backend/appsettings.json
