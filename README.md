@@ -1,132 +1,183 @@
-# DBS Task - Product Management API
+# Product Management System
 
-A clean and scalable ASP.NET Core Web API for managing products, users, roles, and authorization with JWT.
+A full-stack web application for managing products with role-based access control, built with ASP.NET Core and Angular.
 
-This project follows a layered architecture with CQRS (MediatR), Entity Framework Core, and permission-based authorization.
+## Overview
+
+This is a comprehensive product management system that demonstrates modern web development practices with a clean architecture, secure authentication, and responsive user interface.
+
+## Architecture
+
+The application follows a **layered architecture** with clear separation of concerns:
+
+```
+┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │    Backend      │
+│   (Angular)     │◄──►│  (ASP.NET Core) │
+│                 │    │                 │
+│ - UI Components │    │ - Web API      │
+│ - Services      │    │ - Business Logic│
+│ - Routing       │    │ - Data Access  │
+└─────────────────┘    └─────────────────┘
+                              │
+                       ┌─────────────────┐
+                       │   Database      │
+                       │  (SQL Server)   │
+                       └─────────────────┘
+```
 
 ## Tech Stack
 
-- ASP.NET Core 8 Web API
-- Entity Framework Core + SQL Server
-- ASP.NET Core Identity
-- JWT Authentication + Refresh Tokens
-- MediatR (CQRS)
-- AutoMapper
-- FluentValidation
-- Swagger / OpenAPI
+### Frontend
+- **Angular 21** - Modern TypeScript-based framework
+- **Tailwind CSS** - Utility-first CSS framework
+- **RxJS** - Reactive programming library
+- **SweetAlert2** - Beautiful alert dialogs
+- **ngx-toastr** - Toast notifications
+
+### Backend
+- **ASP.NET Core 8** - Web API framework
+- **Entity Framework Core** - ORM for data access
+- **ASP.NET Core Identity** - Authentication & authorization
+- **JWT Authentication** - Secure token-based auth
+- **MediatR** - CQRS pattern implementation
+- **AutoMapper** - Object mapping
+- **FluentValidation** - Input validation
+- **Swagger/OpenAPI** - API documentation
+
+### Database
+- **SQL Server** - Relational database
+- **Code-first migrations** - Schema management
+
+## Key Features
+
+### Security & Authentication
+- JWT-based authentication with refresh tokens
+- Role-based access control (RBAC)
+- Permission-based authorization policies
+- Secure password handling with ASP.NET Core Identity
+
+### Product Management
+- Create, read, update, delete products
+- Product status tracking with history
+- Soft delete functionality
+- Advanced filtering and pagination
+
+### User Management
+- User registration and management
+- Role assignment (ProjectManager, Supervisor, WarehouseManager)
+- Granular permission control
+
+### Analytics & Reporting
+- Product statistics dashboard
+- User activity tracking
+- Status change history
+
+## Quick Start
+
+### Prerequisites
+- **.NET 8 SDK** or later
+- **Node.js 18+** and **npm**
+- **SQL Server** (local or remote)
+- **Angular CLI** (`npm install -g @angular/cli`)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd DBS_Task
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd Backend
+   dotnet restore
+   dotnet run
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd FrontEnd/product-app
+   npm install
+   ng serve
+   ```
+
+4. **Database Configuration**
+   - Update connection string in `Backend/appsettings.json`
+   - Run migrations: `dotnet ef database update`
+
+### Access Points
+- **Frontend**: `http://localhost:4200`
+- **Backend API**: `http://localhost:5119`
+- **API Documentation**: `http://localhost:5119/swagger`
 
 ## Project Structure
 
-- `API` - controllers and HTTP layer
-- `Application` - CQRS commands/queries, DTOs, validators, business use cases
-- `Domain` - core entities
-- `Infrastructure` - EF Core context, migrations, security, services, seeders
-- `Contracts` - request contracts used by endpoints
-
-## Features
-
-- JWT login with refresh token flow
-- Role and permission (claim) based authorization policies
-- Product management:
-  - Create product
-  - List products (with filtering/pagination support via query contracts)
-  - Get product by id with status history
-  - Soft delete product
-  - Change product status
-- User management:
-  - Create user
-  - Get users (list/details)
-- Roles and claims retrieval
-- Statistics endpoint
-- Swagger UI for testing endpoints
-
-## Getting Started
-
-### 1) Prerequisites
-
-- .NET SDK 8.0+
-- SQL Server (local or remote)
-
-### 2) Clone and Restore
-
-```bash
-git clone <your-repository-url>
-cd DBS_Task
-dotnet restore
+```
+DBS_Task/
+├── Backend/                 # ASP.NET Core Web API
+│   ├── API/                # Controllers and endpoints
+│   ├── Application/         # Business logic (CQRS)
+│   ├── Domain/             # Core entities
+│   ├── Infrastructure/      # Data access and services
+│   └── Contracts/          # Request/response contracts
+├── FrontEnd/
+│   └── product-app/        # Angular application
+│       ├── src/
+│       │   ├── app/        # Application components
+│       │   ├── components/ # Reusable UI components
+│       │   ├── services/   # API services
+│       │   └── models/     # TypeScript interfaces
+│       └── public/         # Static assets
+└── README.md              # This file
 ```
 
-### 3) Configure Settings
+## Configuration
 
-Update `appsettings.json`:
+### Backend Configuration
+Update `Backend/appsettings.json`:
 
-- `ConnectionStrings:DefaultConnection` with your SQL Server connection string
-- `JwtSettings:SecretKey` with a strong secret key (or provide it via environment variable)
-
-Example environment variable (PowerShell):
-
-```powershell
-$env:JwtSettings__SecretKey="your-very-strong-secret-key"
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=.;Database=DBS_Task_Db;Trusted_Connection=True;"
+  },
+  "JwtSettings": {
+    "SecretKey": "your-super-secret-key-min-32-chars",
+    "Issuer": "ProductManagement",
+    "Audience": "ProductManagementUsers",
+    "ExpirationMinutes": 60
+  }
+}
 ```
 
-### 4) Apply Database Migrations
+### Frontend Configuration
+Update API base URL in `FrontEnd/product-app/src/environments/environment.ts`:
 
-```bash
-dotnet ef database update
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:5119/api'
+};
 ```
 
-If `dotnet ef` is missing:
+## Contributing
 
-```bash
-dotnet tool install --global dotnet-ef
-```
-
-### 5) Run the API
-
-```bash
-dotnet run
-```
-
-Swagger will be available at:
-
-- `http://localhost:5119/swagger`
-- or the HTTPS URL from `Properties/launchSettings.json`
-
-## Authentication and Authorization
-
-1. Call `POST /api/Auth/login` to get an access token.
-2. In Swagger, click **Authorize** and enter:
-
-```text
-Bearer <your_access_token>
-```
-
-3. Access protected endpoints based on your role claims (`permission` claims).
-
-## Main API Endpoints
-
-- `POST /api/Auth/login`
-- `POST /api/Auth/refresh-token`
-- `POST /api/Auth/logout`
-- `GET /api/Products`
-- `POST /api/Products`
-- `GET /api/Products/{id}`
-- `PATCH /api/Products/{id}/status`
-- `DELETE /api/Products/{id}`
-- `GET /api/ProductStatusHistories`
-- `GET /api/Users`
-- `POST /api/Users`
-- `GET /api/Users/{id}`
-- `GET /api/Roles`
-- `GET /api/Roles/{id}/claims`
-- `GET /api/Statistics`
-
-## Notes
-
-- Roles and permission claims are seeded in the database at startup.
-- Protected routes require valid JWT tokens and matching authorization policies.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-This project is for internship/training purposes.  
-You can add your preferred license (for example, MIT) before publishing publicly.
+This project is for educational and internship purposes. Please add your preferred license before using in production.
 
+## Support
+
+For questions and support, please open an issue in the repository.
+
+---
+
+**Built with ❤️ for the DBS Internship Program**
