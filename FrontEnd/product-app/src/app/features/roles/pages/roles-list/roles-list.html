@@ -1,0 +1,27 @@
+<section class="roles-page">
+	<header class="roles-page__header">
+		<h2>Roles List</h2>
+		<p>Available roles in the system.</p>
+	</header>
+
+	@if (errorMessage()) {
+		<p class="roles-page__error">{{ errorMessage() }}</p>
+	}
+
+	@if (loading()) {
+		<p class="roles-page__state">Loading roles...</p>
+	} @else {
+		@if (roles().length === 0) {
+			<p class="roles-page__state">No roles found.</p>
+		} @else {
+			<ul class="roles-page__list">
+				@for (role of roles(); track trackByRole($index, role)) {
+					<li class="roles-page__item">
+						<span class="roles-page__name">{{ role.name }}</span>
+						<a [routerLink]="['/dashboard/role-claims']" [queryParams]="{ roleId: role.id }">View claims</a>
+					</li>
+				}
+			</ul>
+		}
+	}
+</section>

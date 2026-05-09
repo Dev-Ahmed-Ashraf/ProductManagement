@@ -1,0 +1,134 @@
+<div class="users-list">
+	<!-- Header -->
+	<div class="users-list__header">
+		<h1 class="users-list__title">Users Management</h1>
+		<p class="users-list__subtitle">Search, filter, and manage users</p>
+		<a class="users-list__add-link" routerLink="/dashboard/users/add">Add user</a>
+	</div>
+
+	<!-- Error State -->
+	@if (errorMessage()) {
+		<div class="users-list__error" role="alert">
+			<span class="users-list__error-icon">⚠</span>
+			{{ errorMessage() }}
+		</div>
+	}
+
+	<!-- Filters -->
+	<div class="users-list__filters">
+		<div class="filters-grid">
+			<input
+				type="search"
+				class="filter-input"
+				placeholder="Full name"
+				[formControl]="nameControl"
+				[disabled]="loading()"
+				aria-label="Filter by full name"
+			/>
+			<input
+				type="search"
+				class="filter-input"
+				placeholder="Username"
+				[formControl]="userNameControl"
+				[disabled]="loading()"
+				aria-label="Filter by username"
+			/>
+			<input
+				type="search"
+				class="filter-input"
+				placeholder="Email"
+				[formControl]="emailControl"
+				[disabled]="loading()"
+				aria-label="Filter by email"
+			/>
+			<input
+				type="search"
+				class="filter-input"
+				placeholder="Role"
+				[formControl]="roleControl"
+				[disabled]="loading()"
+				aria-label="Filter by role"
+			/>
+			<select
+				class="filter-input"
+				[formControl]="isActiveControl"
+				[disabled]="loading()"
+				aria-label="Filter by active status"
+			>
+				<option value="">Any Status</option>
+				<option value="true">Active</option>
+				<option value="false">Inactive</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- Loading State -->
+	@if (loading()) {
+		<div class="users-list__loading">
+			<div class="spinner"></div>
+			<p>Loading users...</p>
+		</div>
+	}
+
+	<!-- Table -->
+	@if (!loading() && hasUsers()) {
+		<div class="users-list__table-wrapper">
+			<table class="users-table">
+				<thead class="users-table__head">
+					<tr>
+						<th>Full Name</th>
+						<th>Username</th>
+						<th>Email</th>
+						<th>Role</th>
+						<th>Status</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody class="users-table__body">
+					@for (u of users(); track trackByUser($index, u)) {
+						<tr class="users-table__row">
+							<td class="users-table__cell">{{ u.fullName }}</td>
+							<td class="users-table__cell">{{ u.userName }}</td>
+							<td class="users-table__cell">{{ u.email }}</td>
+							<td class="users-table__cell">
+								<span class="role-badge">{{ u.role }}</span>
+							</td>
+							<td class="users-table__cell">
+								<span
+									class="status-badge"
+									[class.status-badge--active]="u.isActive"
+									[class.status-badge--inactive]="!u.isActive"
+								>
+									{{ u.isActive ? 'Active' : 'Inactive' }}
+								</span>
+							</td>
+							<td class="users-table__cell">
+								<a class="user-details-link" [routerLink]="['/dashboard/users', u.id]">View details</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+
+	<!-- Empty State -->
+	@if (!loading() && !hasUsers() && !errorMessage()) {
+		<div class="users-list__empty">
+			<p class="users-list__empty-text">{{ emptyMessage() }}</p>
+		</div>
+	}
+
+	<!-- Pagination -->
+	@if (!loading() && totalPages() > 0) {
+		<div class="users-list__pagination">
+			<app-pagination
+				[currentPage]="currentPage()"
+				[totalPages]="totalPages()"
+				[maxVisiblePages]="5"
+				[disabled]="loading()"
+				(pageChange)="onPageChange($event)"
+			></app-pagination>
+		</div>
+	}
+</div>

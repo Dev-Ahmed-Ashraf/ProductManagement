@@ -1,0 +1,175 @@
+<div class="add-user-page">
+  <section class="add-user-shell">
+    <header class="page-hero">
+      <div>
+        <p class="eyebrow">User management</p>
+        <h1>Create user account</h1>
+        <p class="hero-copy">Add a teammate, assign one role, and review access claims before creating the account.</p>
+      </div>
+
+      <div class="hero-summary">
+        <span class="summary-label">Setup flow</span>
+        <strong>Identity -> Security -> Access</strong>
+      </div>
+    </header>
+
+    <form class="add-user-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <section class="form-panel form-panel--main">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Identity</p>
+            <h2>Profile information</h2>
+          </div>
+          <span class="section-step">Step 01</span>
+        </div>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Full name</span>
+            <input type="text" formControlName="fullName" placeholder="Jane Doe" autocomplete="name" />
+            @if (fullNameControl.touched && fullNameControl.invalid) {
+              <small class="field-error">Full name is required and must be at least 3 characters.</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Email address</span>
+            <input type="email" formControlName="email" placeholder="jane@company.com" autocomplete="email" />
+            @if (emailControl.touched && emailControl.invalid) {
+              <small class="field-error">Enter a valid email address.</small>
+            }
+          </label>
+        </div>
+      </section>
+
+      <section class="form-panel form-panel--main">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Security</p>
+            <h2>Temporary password</h2>
+          </div>
+          <span class="section-step">Step 02</span>
+        </div>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Password</span>
+            <div class="password-row">
+              <input
+                [type]="showPassword() ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Create a strong password"
+                autocomplete="new-password"
+              />
+              <button type="button" class="ghost-button" (click)="togglePasswordVisibility()">
+                {{ showPassword() ? 'Hide' : 'Show' }}
+              </button>
+            </div>
+            @if (passwordControl.touched && passwordControl.invalid) {
+              <small class="field-error">Password must be at least 8 characters long.</small>
+            }
+
+            <div class="strength-meter" aria-label="Password strength">
+              <div class="strength-meter__track">
+                <div class="strength-meter__fill" [style.width.%]="passwordStrength().score * 25" [class]="passwordStrength().color"></div>
+              </div>
+              <div class="strength-meter__meta">
+                <span>Password strength</span>
+                <strong>{{ passwordStrength().label }}</strong>
+              </div>
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Confirm password</span>
+            <div class="password-row">
+              <input
+                [type]="showPassword() ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                placeholder="Repeat password"
+                autocomplete="new-password"
+              />
+              <button type="button" class="ghost-button" (click)="togglePasswordVisibility()">
+                {{ showPassword() ? 'Hide' : 'Show' }}
+              </button>
+            </div>
+            @if (confirmPasswordControl.touched && confirmPasswordControl.invalid) {
+              <small class="field-error">Confirm password is required.</small>
+            }
+            @if (form.touched && form.errors?.['passwordMismatch']) {
+              <small class="field-error">Passwords do not match.</small>
+            }
+          </label>
+        </div>
+      </section>
+
+      <section class="form-layout">
+        <div class="form-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Access</p>
+              <h2>Role assignment</h2>
+            </div>
+            <span class="section-step">Step 03</span>
+          </div>
+
+          <div class="role-section">
+            <app-role-dropdown
+              [roles]="roles()"
+              [selectedRoleId]="selectedRoleId()"
+              [disabled]="loadingRoles()"
+              label="Role"
+              emptyOptionLabel="Select exactly one role"
+              (roleChange)="onRoleChange($event)"
+            />
+
+            @if (roleIdControl.touched && roleIdControl.invalid) {
+              <p class="field-error field-error--role">A role is required.</p>
+            }
+          </div>
+        </div>
+
+        <aside class="form-panel access-preview">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Preview</p>
+              <h2>Role claims</h2>
+            </div>
+            <span class="claims-count">{{ roleClaims().length }}</span>
+          </div>
+
+          @if (selectedRoleId() === null) {
+            <p class="claims-state">Select a role to preview the permissions that will be assigned.</p>
+          } @else if (loadingClaims()) {
+            <div class="claims-loading">
+              <span></span>
+              <p>Loading claims...</p>
+            </div>
+          } @else if (!hasRoleClaims()) {
+            <p class="claims-state">No claims found for this role.</p>
+          } @else {
+            <ul class="claims-list">
+              @for (claim of roleClaims(); track trackByClaim($index, claim)) {
+                <li>
+                  <span>{{ claim.type }}</span>
+                  <code>{{ claim.value }}</code>
+                </li>
+              }
+            </ul>
+          }
+        </aside>
+      </section>
+
+      <div class="form-actions">
+        <div>
+          <p class="action-title">Ready to create this account?</p>
+          <p class="action-copy">The user will be created with the selected role.</p>
+        </div>
+
+        <button type="submit" class="submit-button" [disabled]="submitting()">
+          {{ submitting() ? 'Creating user...' : 'Create user' }}
+        </button>
+      </div>
+    </form>
+  </section>
+</div>

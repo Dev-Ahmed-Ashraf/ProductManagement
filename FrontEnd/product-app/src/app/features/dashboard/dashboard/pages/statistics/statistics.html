@@ -1,0 +1,214 @@
+<div class="statistics-page min-h-screen bg-slate-50">
+  <div class="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+    <section class="analytics-hero overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.07)]">
+      <div class="grid gap-6 bg-gradient-to-r from-slate-950 via-slate-900 to-teal-900 px-6 py-7 text-white lg:grid-cols-[minmax(0,1fr)_22rem] lg:px-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.34em] text-teal-200">Analytics center</p>
+          <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Operational statistics</h1>
+          <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-200 sm:text-base">
+            Monitor product availability, workflow movement, and account health from one focused dashboard.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur">
+          <p class="text-xs uppercase tracking-[0.22em] text-slate-300">Top status</p>
+          <p class="mt-3 text-3xl font-bold">{{ topProductStatusLabel() }}</p>
+          <p class="mt-2 text-sm text-slate-200">
+            {{ topProductStatusValue() | number }} products in the largest status group.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid gap-4 px-6 py-5 sm:grid-cols-3 lg:px-8">
+        <div class="rounded-2xl bg-slate-50 px-4 py-3">
+          <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Availability</span>
+          <p class="mt-1 text-2xl font-semibold text-slate-900">{{ availableRate() }}%</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 px-4 py-3">
+          <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Active users</span>
+          <p class="mt-1 text-2xl font-semibold text-slate-900">{{ activeUserRate() }}%</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 px-4 py-3">
+          <span class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Risk inventory</span>
+          <p class="mt-1 text-2xl font-semibold text-slate-900">{{ riskProductRate() }}%</p>
+        </div>
+      </div>
+    </section>
+
+    @if (error()) {
+      <div class="rounded-2xl border border-red-300 bg-red-50 p-4 text-sm text-red-800">
+        <p class="font-semibold">Error loading statistics</p>
+        <p class="mt-1">{{ error() }}</p>
+      </div>
+    }
+
+    <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      @for (card of metricCards; track card.title) {
+        <app-stats-card
+          [title]="card.title"
+          [value]="card.value()"
+          [subtitle]="card.subtitle()"
+          [tone]="card.tone"
+          [loading]="loading()"
+        />
+      }
+    </section>
+
+    <section class="grid gap-6 xl:grid-cols-[minmax(0,1.25fr)_minmax(22rem,0.75fr)]">
+      <article class="analytics-panel rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-teal-600">Products mix</p>
+            <h2 class="mt-2 text-xl font-semibold text-slate-900">Distribution by status</h2>
+          </div>
+          <p class="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600">
+            {{ productTotal() | number }} total products
+          </p>
+        </div>
+
+        <div class="mt-6 grid gap-5 lg:grid-cols-[16rem_minmax(0,1fr)]">
+          <div class="flex items-center justify-center">
+            <div class="chart-donut relative grid h-56 w-56 place-items-center rounded-full" [style.background]="productDonutBackground()">
+              <div class="absolute inset-[22px] rounded-full bg-white shadow-inner"></div>
+              <div class="relative text-center">
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-slate-400">Products</p>
+                <p class="mt-2 text-4xl font-semibold text-slate-900">{{ productTotal() | number }}</p>
+                <p class="mt-1 text-sm text-slate-500">{{ publishReadyRate() }}% publish-ready</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            @for (item of productChart(); track item.label) {
+              <div class="chart-row rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                <div class="flex items-center justify-between gap-3 text-sm">
+                  <div class="flex min-w-0 items-center gap-2">
+                    <span class="h-2.5 w-2.5 shrink-0 rounded-full" [style.backgroundColor]="item.color"></span>
+                    <span class="truncate font-semibold text-slate-700">{{ item.label }}</span>
+                  </div>
+                  <span class="font-bold text-slate-900">{{ item.value | number }}</span>
+                </div>
+                <div class="mt-3 h-3 overflow-hidden rounded-full bg-white">
+                  <div
+                    class="h-full rounded-full transition-[width] duration-500"
+                    [style.width.%]="item.percent"
+                    [style.backgroundColor]="item.color"
+                  ></div>
+                </div>
+                <p class="mt-2 text-xs text-slate-500">{{ item.share | number: '1.0-0' }}% of inventory</p>
+              </div>
+            }
+          </div>
+        </div>
+      </article>
+
+      <article class="analytics-panel rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-teal-600">Users</p>
+          <h2 class="mt-2 text-xl font-semibold text-slate-900">Account health</h2>
+        </div>
+
+        <div class="mt-6 flex items-center justify-center">
+          <div class="chart-donut relative grid h-56 w-56 place-items-center rounded-full" [style.background]="userDonutBackground()">
+            <div class="absolute inset-[22px] rounded-full bg-white shadow-inner"></div>
+            <div class="relative z-10 text-center">
+              <p class="text-xs font-bold uppercase tracking-[0.25em] text-slate-400">Active rate</p>
+              <p class="mt-2 text-4xl font-semibold tracking-tight text-slate-900">{{ activeUserRate() }}%</p>
+              <p class="mt-1 text-sm text-slate-500">{{ userTotal() | number }} total users</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 grid gap-3">
+          @for (item of userChart(); track item.label) {
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="h-2.5 w-2.5 rounded-full" [style.backgroundColor]="item.color"></span>
+                  <span class="text-sm font-semibold text-slate-700">{{ item.label }}</span>
+                </div>
+                <span class="text-sm font-bold text-slate-900">{{ item.value | number }}</span>
+              </div>
+              <p class="mt-2 text-xs text-slate-500">{{ item.percent | number: '1.0-0' }}% of accounts</p>
+            </div>
+          }
+        </div>
+      </article>
+    </section>
+
+    <section class="grid gap-6 lg:grid-cols-3">
+      <article class="analytics-panel rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_16px_50px_rgba(15,23,42,0.06)] lg:col-span-2">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-teal-600">Inventory posture</p>
+            <h2 class="mt-2 text-xl font-semibold text-slate-900">Ready vs attention</h2>
+          </div>
+          <span class="text-sm font-semibold text-slate-500">{{ statusChangeTotal() | number }} workflow changes</span>
+        </div>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
+            <span class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Publish-ready</span>
+            <p class="mt-3 text-3xl font-semibold text-slate-900">{{ publishReadyTotal() | number }}</p>
+            <div class="mt-4 h-2 overflow-hidden rounded-full bg-white">
+              <div class="h-full rounded-full bg-emerald-500" [style.width.%]="publishReadyRate()"></div>
+            </div>
+            <p class="mt-2 text-sm text-emerald-800">{{ publishReadyRate() }}% of products</p>
+          </div>
+
+          <div class="rounded-2xl border border-amber-100 bg-amber-50 p-5">
+            <span class="text-xs font-bold uppercase tracking-[0.18em] text-amber-700">Needs attention</span>
+            <p class="mt-3 text-3xl font-semibold text-slate-900">{{ riskProductTotal() | number }}</p>
+            <div class="mt-4 h-2 overflow-hidden rounded-full bg-white">
+              <div class="h-full rounded-full bg-amber-500" [style.width.%]="riskProductRate()"></div>
+            </div>
+            <p class="mt-2 text-sm text-amber-800">{{ riskProductRate() }}% of products</p>
+          </div>
+
+          <div class="rounded-2xl border border-blue-100 bg-blue-50 p-5">
+            <span class="text-xs font-bold uppercase tracking-[0.18em] text-blue-700">Activity</span>
+            <p class="mt-3 text-3xl font-semibold text-slate-900">{{ statusChangeTotal() | number }}</p>
+            <p class="mt-4 text-sm leading-6 text-blue-800">Total product status changes captured by the workflow.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="analytics-panel rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-teal-600">Snapshot</p>
+        <h2 class="mt-2 text-xl font-semibold text-slate-900">System balance</h2>
+
+        <div class="mt-6 space-y-4">
+          <div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="font-semibold text-slate-700">Product availability</span>
+              <span class="font-bold text-slate-900">{{ availableRate() }}%</span>
+            </div>
+            <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
+              <div class="h-full rounded-full bg-teal-500" [style.width.%]="availableRate()"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="font-semibold text-slate-700">User activation</span>
+              <span class="font-bold text-slate-900">{{ activeUserRate() }}%</span>
+            </div>
+            <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
+              <div class="h-full rounded-full bg-violet-500" [style.width.%]="activeUserRate()"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="font-semibold text-slate-700">Inventory risk</span>
+              <span class="font-bold text-slate-900">{{ riskProductRate() }}%</span>
+            </div>
+            <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
+              <div class="h-full rounded-full bg-amber-500" [style.width.%]="riskProductRate()"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+</div>

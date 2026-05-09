@@ -1,0 +1,38 @@
+<section class="role-claims-page">
+	<header class="role-claims-page__header">
+		<h2>Role Claims</h2>
+		<p>Choose a role to view its claims.</p>
+	</header>
+
+	<app-role-dropdown
+		[roles]="roles()"
+		[selectedRoleId]="selectedRoleId()"
+		[disabled]="loadingRoles()"
+		label="Role"
+		emptyOptionLabel="All roles"
+		(roleChange)="onRoleChange($event)"
+	/>
+
+	@if (errorMessage()) {
+		<p class="role-claims-page__error">{{ errorMessage() }}</p>
+	}
+
+	@if (loadingClaims()) {
+		<p class="role-claims-page__state">Loading claims...</p>
+	} @else {
+		@if (selectedRoleId() === null) {
+			<p class="role-claims-page__state">Select a role to see claims.</p>
+		} @else if (!hasClaims()) {
+			<p class="role-claims-page__state">No claims found for this role.</p>
+		} @else {
+			<ul class="role-claims-page__list">
+				@for (claim of claims(); track trackByClaim($index, claim)) {
+					<li class="role-claims-page__item">
+						<span class="role-claims-page__type">{{ claim.type }}</span>
+						<code class="role-claims-page__value">{{ claim.value }}</code>
+					</li>
+				}
+			</ul>
+		}
+	}
+</section>

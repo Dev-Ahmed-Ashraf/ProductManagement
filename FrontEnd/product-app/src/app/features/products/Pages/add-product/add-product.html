@@ -1,0 +1,126 @@
+<div class="product-shell">
+  <main class="product-workspace">
+    <header class="product-hero">
+      <div>
+        <p class="eyebrow">Catalog management</p>
+        <h1>Add product</h1>
+        <p>Create a polished product record with pricing, inventory, and catalog description.</p>
+      </div>
+
+      <div class="hero-stat">
+        <span>Default status</span>
+        <strong>Draft</strong>
+      </div>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="product-form" novalidate>
+      <section class="form-panel form-panel--primary">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Product identity</p>
+            <h2>Core information</h2>
+          </div>
+          <span class="panel-badge">Required</span>
+        </div>
+
+        <div class="field-group">
+          <label for="name">Product name</label>
+          <input id="name" formControlName="name" placeholder="Premium wireless keyboard" autocomplete="off" />
+
+          @if (f['name'].touched && f['name'].invalid) {
+            <p class="field-error">
+              @if (f['name'].errors?.['required']) { Name is required }
+              @if (f['name'].errors?.['minlength']) { Minimum 3 characters }
+            </p>
+          }
+        </div>
+
+        <div class="field-group">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="5"
+            placeholder="Describe the product, key specs, use cases, or fulfillment notes."
+          ></textarea>
+          <p class="field-hint">Optional, up to 1000 characters.</p>
+        </div>
+      </section>
+
+      <section class="form-grid">
+        <article class="form-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Pricing</p>
+              <h2>Commercial data</h2>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="price">Price</label>
+            <div class="input-prefix">
+              <span>$</span>
+              <input id="price" type="number" formControlName="price" placeholder="0.00" />
+            </div>
+
+            @if (f['price'].touched && f['price'].invalid) {
+              <p class="field-error">
+                @if (f['price'].errors?.['required']) { Price is required }
+                @if (f['price'].errors?.['min']) { Must be greater than 0 }
+              </p>
+            }
+          </div>
+        </article>
+
+        <article class="form-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Inventory</p>
+              <h2>Stock level</h2>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="quantity">Quantity</label>
+            <input id="quantity" type="number" formControlName="quantity" placeholder="0" />
+
+            @if (f['quantity'].touched && f['quantity'].invalid) {
+              <p class="field-error">
+                @if (f['quantity'].errors?.['required']) { Quantity is required }
+                @if (f['quantity'].errors?.['min']) { Quantity cannot be negative }
+              </p>
+            }
+          </div>
+        </article>
+      </section>
+
+      <section class="product-preview">
+        <div>
+          <p class="eyebrow">Record preview</p>
+          <h2>{{ form.value.name || 'New catalog product' }}</h2>
+          <p>{{ form.value.description || 'No description provided yet.' }}</p>
+        </div>
+
+        <div class="preview-metrics">
+          <span>{{ form.value.price || 0 | currency }}</span>
+          <span>{{ form.value.quantity || 0 }} units</span>
+        </div>
+      </section>
+
+      <footer class="form-actions">
+        <div>
+          <p class="action-title">Create product record</p>
+          <p class="action-copy">You can update the status after the product is created.</p>
+        </div>
+
+        <button type="submit" [disabled]="form.invalid || isLoading" class="save-button">
+          @if (isLoading) {
+            Saving...
+          } @else {
+            Save product
+          }
+        </button>
+      </footer>
+    </form>
+  </main>
+</div>

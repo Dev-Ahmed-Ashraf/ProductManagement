@@ -1,0 +1,24 @@
+<div class="role-dropdown-shell">
+  <label class="role-dropdown-label">{{ label() }}</label>
+
+  <div class="role-dropdown-control">
+    <select
+      class="role-select"
+      [disabled]="disabled()"
+      [value]="selectedRoleId() === null ? '' : selectedRoleId() + ''"
+      (change)="onChange($any($event.target)?.value)"
+      aria-label="Select role"
+    >
+      <option value="">{{ emptyOptionLabel() }}</option>
+      @for (role of roles(); track role.id) {
+        <option [value]="role.id + ''">{{ role.name }}</option>
+      }
+    </select>
+
+    <span class="role-dropdown-chevron" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </span>
+  </div>
+</div>

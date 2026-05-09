@@ -1,0 +1,116 @@
+:host {
+  display: block;
+}
+
+.status-dropdown-shell {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid rgb(226 232 240 / 0.95);
+  border-radius: 1.25rem;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.98), rgb(248 250 252 / 0.92));
+  box-shadow: 0 12px 32px rgb(15 23 42 / 0.08);
+  padding: 1rem;
+}
+
+.status-dropdown-header,
+.status-dropdown-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.status-dropdown-label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(100 116 139);
+}
+
+.status-dropdown-subtitle {
+  margin: 0.35rem 0 0;
+  font-size: 0.875rem;
+  color: rgb(100 116 139);
+}
+
+.status-dropdown-control {
+  position: relative;
+}
+
+.status-select {
+  width: 100%;
+  appearance: none;
+  border: 1px solid rgb(203 213 225);
+  border-radius: 0.95rem;
+  background: rgb(255 255 255);
+  padding: 0.9rem 3rem 0.9rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgb(15 23 42);
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.status-select:hover:not(:disabled) {
+  border-color: rgb(56 189 248 / 0.7);
+}
+
+.status-select:focus {
+  border-color: rgb(20 184 166);
+  box-shadow: 0 0 0 4px rgb(45 212 191 / 0.14);
+}
+
+.status-select:disabled {
+  cursor: not-allowed;
+  background: rgb(248 250 252);
+  color: rgb(148 163 184);
+}
+
+.status-dropdown-chevron {
+  pointer-events: none;
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  display: inline-flex;
+  height: 1rem;
+  width: 1rem;
+  transform: translateY(-50%);
+  color: rgb(100 116 139);
+}
+
+.status-dropdown-chevron svg {
+  width: 100%;
+  height: 100%;
+}
+
+.status-dropdown-footer {
+  flex-wrap: wrap;
+}
+
+.status-dropdown-current {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-dropdown-hint {
+  font-size: 0.75rem;
+  color: rgb(100 116 139);
+}
+
+@media (max-width: 640px) {
+  .status-dropdown-shell {
+    padding: 0.875rem;
+  }
+
+  .status-dropdown-header,
+  .status-dropdown-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

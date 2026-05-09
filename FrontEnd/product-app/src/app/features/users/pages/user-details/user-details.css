@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.user-details-page {
+  isolation: isolate;
+}
+
+.top-sheen {
+  pointer-events: none;
+}
+
+.panel,
+.info-card,
+.profile-avatar,
+.status-panel,
+.back-link {
+  animation: riseIn 540ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.info-card {
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+  border-color: rgb(94 234 212 / 0.7);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.detail-row {
+  min-width: 0;
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .info-card,
+  .profile-avatar,
+  .status-panel,
+  .back-link {
+    animation: none;
+  }
+
+  .info-card {
+    transition: none;
+  }
+}

@@ -1,0 +1,65 @@
+:host {
+  display: block;
+}
+
+.role-dropdown-shell {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.role-dropdown-label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgb(100 116 139);
+}
+
+.role-dropdown-control {
+  position: relative;
+}
+
+.role-select {
+  width: 100%;
+  appearance: none;
+  border: 1px solid rgb(203 213 225);
+  border-radius: 0.85rem;
+  background: rgb(255 255 255);
+  padding: 0.75rem 2.5rem 0.75rem 0.9rem;
+  font-size: 0.95rem;
+  color: rgb(15 23 42);
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.role-select:hover:not(:disabled) {
+  border-color: rgb(94 234 212);
+}
+
+.role-select:focus {
+  border-color: rgb(13 148 136);
+  box-shadow: 0 0 0 3px rgb(45 212 191 / 0.18);
+}
+
+.role-select:disabled {
+  cursor: not-allowed;
+  color: rgb(148 163 184);
+  background: rgb(248 250 252);
+}
+
+.role-dropdown-chevron {
+  pointer-events: none;
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  width: 1rem;
+  height: 1rem;
+  transform: translateY(-50%);
+  color: rgb(100 116 139);
+}
+
+.role-dropdown-chevron svg {
+  width: 100%;
+  height: 100%;
+}

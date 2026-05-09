@@ -1,0 +1,77 @@
+.stats-card {
+  position: relative;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.stats-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  content: "";
+  background: var(--stats-accent, #14b8a6);
+}
+
+.stats-card__icon {
+  color: var(--stats-accent, #0f766e);
+  background: var(--stats-soft, #ccfbf1);
+}
+
+.stats-card--teal {
+  --stats-accent: #14b8a6;
+  --stats-soft: #ccfbf1;
+}
+
+.stats-card--blue {
+  --stats-accent: #3b82f6;
+  --stats-soft: #dbeafe;
+}
+
+.stats-card--amber {
+  --stats-accent: #f59e0b;
+  --stats-soft: #fef3c7;
+}
+
+.stats-card--rose {
+  --stats-accent: #ef4444;
+  --stats-soft: #ffe4e6;
+}
+
+.stats-card--slate {
+  --stats-accent: #64748b;
+  --stats-soft: #e2e8f0;
+}
+
+.stats-card--violet {
+  --stats-accent: #8b5cf6;
+  --stats-soft: #ede9fe;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  border-color: rgb(94 234 212 / 0.7);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.animate-pulse {
+	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: .5;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stats-card {
+    transition: none;
+  }
+
+  .stats-card:hover {
+    transform: none;
+  }
+}

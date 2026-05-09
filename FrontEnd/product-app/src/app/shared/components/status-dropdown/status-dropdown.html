@@ -1,0 +1,30 @@
+<div class="status-dropdown-shell">
+  <div class="status-dropdown-header">
+    <div>
+      <p class="status-dropdown-label">Current status</p>
+      <p class="status-dropdown-subtitle">Choose a new workflow state</p>
+    </div>
+
+    <app-status-badge [status]="currentStatus"></app-status-badge>
+  </div>
+
+  <div class="status-dropdown-control">
+    <select
+      class="status-select"
+      [disabled]="disabled"
+      [value]="currentStatus + ''"
+      (change)="onChange($any($event.target)?.value)"
+      aria-label="Change product status"
+    >
+      @for (status of statuses; track status.value) {
+        <option [value]="status.value + ''">{{ status.label }}</option>
+      }
+    </select>
+
+    <span class="status-dropdown-chevron" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </span>
+  </div>
+</div>

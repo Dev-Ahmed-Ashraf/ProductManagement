@@ -1,0 +1,7 @@
+.group { display: block; }
+.group .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* small visual polish for cards */
+@media (min-width: 768px) {
+  .group:hover { transform: translateY(-4px); }
+}

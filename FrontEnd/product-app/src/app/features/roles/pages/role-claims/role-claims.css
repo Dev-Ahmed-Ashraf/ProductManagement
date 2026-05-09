@@ -1,0 +1,64 @@
+.role-claims-page {
+	display: grid;
+	gap: 1rem;
+	padding: 1.5rem;
+}
+
+.role-claims-page__header h2 {
+	margin: 0;
+}
+
+.role-claims-page__header p {
+	margin: 0.4rem 0 0;
+	color: rgb(100 116 139);
+}
+
+.role-claims-page__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 0.6rem;
+}
+
+.role-claims-page__item {
+	display: grid;
+	grid-template-columns: minmax(200px, 1fr) minmax(200px, 2fr);
+	align-items: center;
+	gap: 1rem;
+	border: 1px solid rgb(226 232 240);
+	border-radius: 0.75rem;
+	padding: 0.8rem 1rem;
+}
+
+.role-claims-page__type {
+	font-weight: 600;
+	color: rgb(15 23 42);
+}
+
+.role-claims-page__value {
+	border-radius: 0.5rem;
+	background: rgb(248 250 252);
+	border: 1px solid rgb(226 232 240);
+	padding: 0.45rem 0.6rem;
+	font-size: 0.82rem;
+}
+
+.role-claims-page__state {
+	color: rgb(100 116 139);
+}
+
+.role-claims-page__error {
+	color: rgb(185 28 28);
+	background: rgb(254 242 242);
+	border: 1px solid rgb(254 202 202);
+	border-radius: 0.65rem;
+	padding: 0.75rem 1rem;
+}
+
+@media (max-width: 768px) {
+	.role-claims-page__item {
+		grid-template-columns: 1fr;
+	}
+}
+

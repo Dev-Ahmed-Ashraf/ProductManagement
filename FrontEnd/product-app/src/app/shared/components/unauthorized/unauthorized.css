@@ -1,0 +1,4 @@
+.container{
+	/* Replaced Tailwind @apply with equivalent plain CSS to avoid unknown at-rule warning */
+	padding: 2rem; /* equivalent to Tailwind's p-8 */
+}

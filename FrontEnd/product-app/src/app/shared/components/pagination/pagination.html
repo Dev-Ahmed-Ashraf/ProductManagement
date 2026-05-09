@@ -1,0 +1,46 @@
+<nav class="pagination" [class.pagination--disabled]="disabled()" aria-label="Pagination">
+	<div class="pagination__summary" aria-live="polite">
+		@if (!hasPages()) {
+			<span>No records found</span>
+		} @else {
+			<span>Page <strong>{{ activePage() }}</strong> of <strong>{{ totalPages() }}</strong></span>
+		}
+	</div>
+
+	<div class="pagination__controls">
+		<button
+			type="button"
+			class="pagination__nav"
+			(click)="previousPage()"
+			[disabled]="disabled() || activePage() <= 1"
+			aria-label="Previous page"
+		>
+			Previous
+		</button>
+
+		<div class="pagination__pages" aria-label="Page numbers">
+			@for (page of visiblePages(); track page) {
+				<button
+					type="button"
+					class="pagination__page"
+					[class.pagination__page--active]="page === activePage()"
+					[attr.aria-current]="page === activePage() ? 'page' : null"
+					(click)="goToPage(page)"
+					[disabled]="disabled()"
+				>
+					{{ page }}
+				</button>
+			}
+		</div>
+
+		<button
+			type="button"
+			class="pagination__nav"
+			(click)="nextPage()"
+			[disabled]="disabled() || activePage() === 0 || activePage() >= totalPages()"
+			aria-label="Next page"
+		>
+			Next
+		</button>
+	</div>
+</nav>

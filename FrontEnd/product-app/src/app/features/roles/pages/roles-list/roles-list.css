@@ -1,0 +1,88 @@
+.roles-page {
+	display: grid;
+	gap: 1.25rem;
+	padding: clamp(1rem, 2.2vw, 2rem);
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+.roles-page__header h2 {
+	margin: 0;
+	font-size: clamp(1.5rem, 2.4vw, 2rem);
+	color: rgb(15 23 42);
+	letter-spacing: -0.02em;
+}
+
+.roles-page__header p {
+	margin: 0.4rem 0 0;
+	color: rgb(100 116 139);
+	max-width: 65ch;
+}
+
+.roles-page__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 0.6rem;
+}
+
+.roles-page__item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 1px solid rgb(226 232 240);
+	border-radius: 1rem;
+	padding: 1rem 1.1rem;
+	background: linear-gradient(180deg, rgb(255 255 255), rgb(248 250 252));
+	box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.roles-page__item:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 14px 30px rgba(15, 23, 42, 0.09);
+	border-color: rgb(153 246 228);
+}
+
+.roles-page__name {
+	font-weight: 600;
+	color: rgb(15 23 42);
+}
+
+.roles-page__item a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	text-decoration: none;
+	font-size: 0.88rem;
+	font-weight: 700;
+	padding: 0.48rem 0.75rem;
+	border-radius: 999px;
+	border: 1px solid rgb(153 246 228);
+	background: rgb(240 253 250);
+	color: rgb(15 118 110);
+	transition: background-color 0.18s ease, transform 0.18s ease;
+}
+
+.roles-page__item a:hover {
+	background: rgb(204 251 241);
+	transform: translateY(-1px);
+}
+
+.roles-page__state {
+	color: rgb(100 116 139);
+	border: 1px dashed rgb(203 213 225);
+	border-radius: 0.9rem;
+	padding: 1rem;
+	background: rgb(248 250 252);
+}
+
+.roles-page__error {
+	color: rgb(185 28 28);
+	background: rgb(254 242 242);
+	border: 1px solid rgb(254 202 202);
+	border-radius: 0.65rem;
+	padding: 0.75rem 1rem;
+}
+
