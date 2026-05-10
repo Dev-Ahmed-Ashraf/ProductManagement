@@ -32,7 +32,7 @@ namespace DBS_Task.API.Controllers
         {
             var command = new CreateUserCommand(contract);
             var result = await _mediator.Send(command);
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace DBS_Task.API.Controllers
             var query = new GetAllUsersQuery(contract);
             var result = await _mediator.Send(query);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace DBS_Task.API.Controllers
         {
             var query = new GetUserByIdQuery(id);
             var result = await _mediator.Send(query);
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
     }
 }

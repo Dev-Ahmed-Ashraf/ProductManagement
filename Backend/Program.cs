@@ -308,6 +308,7 @@ using (var scope = app.Services.CreateScope())
 // ============================================================
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

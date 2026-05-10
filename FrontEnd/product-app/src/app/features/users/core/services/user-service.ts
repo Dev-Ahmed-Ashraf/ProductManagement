@@ -5,6 +5,7 @@ import { UserResponse } from '../models/user-response.model';
 import { PagedResponse } from '../../../../core/Models/paged-response.model';
 import { ApiResponse } from '../../../../core/Models/GenericResponse.model';
 import { Observable } from 'rxjs';
+import { CreateUserCommand } from '../models/create-user-command.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,7 @@ export class UserService {
     return this.userHttpService.getUsers(query);
   }
 
-  createUser(
-    data: import('../models/create-user-command.model').CreateUserCommand,
-  ): Observable<ApiResponse<UserResponse>> {
+  createUser(data: CreateUserCommand): Observable<ApiResponse<UserResponse>> {
     return this.userHttpService.createUser(data);
   }
 

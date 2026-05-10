@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Results;
+﻿using DBS_Task.Application.Common.Exceptions;
+using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.ProductStatusHistory;
 using DBS_Task.Domain.Entities;
 using DBS_Task.Infrastructure.Data.DBContext;
@@ -21,13 +22,13 @@ namespace DBS_Task.Application.CQRS.Products.Commands.ChangeProductStatus
              var product = await _dbContext.Products.FindAsync(request.ProductId, cancellationToken);
 
             if (product is null)
-                return ApiResponse<ChangeProductStatusResponseDto>.FailureResponse($"Product with ID {request.ProductId} was not found.", 404);
+                throw new NotFoundException($"Product with ID {request.ProductId} was not found.");
 
             var statusChangeHistory = product.ChangeStatus(request.NewStatus);
 
             // Validate same status
             if (statusChangeHistory is null)
-                return ApiResponse<ChangeProductStatusResponseDto>.FailureResponse($"Product is already set to '{request.NewStatus}'. No change was made.", 400);
+                throw new BadRequestException($"Product is already set to '{request.NewStatus}'. No change was made.");
             
             await _dbContext.SaveChangesAsync();
 

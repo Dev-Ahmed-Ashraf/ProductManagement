@@ -35,7 +35,7 @@ namespace DBS_Task.API.Controllers
             var command = new LoginUserCommand(request);
             var result = await _mediator.Send(command);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace DBS_Task.API.Controllers
         {
             var command = new RefreshTokenCommand(requestContract);
             var result = await _mediator.Send(command);
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace DBS_Task.API.Controllers
         {
             var command = new LogoutUserCommand(requestContract);
             var result = await _mediator.Send(command);
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
     }
 }

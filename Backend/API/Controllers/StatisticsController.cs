@@ -31,7 +31,7 @@ namespace DBS_Task.API.Controllers
         {
             var query = new GetStatisticsQuery();
             var statistics = await _mediator.Send(query);
-            return StatusCode((int)statistics.StatusCode, statistics);
+            return StatusCode((int)statistics.statusCode, statistics);
         }
     }
 }

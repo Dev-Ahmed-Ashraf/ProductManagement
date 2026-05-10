@@ -4,5 +4,4 @@ export interface ApiResponse<T = any> {
   data?: T;
   errors?: string[];
   statusCode?: number;
-  HttpStatusCode?: number;
 }

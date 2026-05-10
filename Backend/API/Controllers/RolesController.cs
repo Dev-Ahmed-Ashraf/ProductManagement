@@ -27,7 +27,7 @@ namespace DBS_Task.API.Controllers
             var query = new GetAllRolesQuery();
             var result = await _mediator.Send(query);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace DBS_Task.API.Controllers
             var query = new GetRoleClaimsQuery(id);
             var result = await _mediator.Send(query);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
     }
 }

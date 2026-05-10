@@ -10,14 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap,
-  tap,
-  finalize,
-} from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap, tap, finalize } from 'rxjs';
 import { takeUntilDestroyed as takeUntilDestroyedInterop } from '@angular/core/rxjs-interop';
 import { UserService } from '../../core/services/user-service';
 import { UserResponse } from '../../core/models/user-response.model';
@@ -83,6 +76,32 @@ export class UsersList implements OnInit {
     return user.id.toString();
   }
 
+  private loadUsers(state: UsersListQueryState) {
+    this.loading.set(true);
+    this.errorMessage.set(null);
+
+    return this.userService
+      .getUsers({
+        pageNumber: state.pageNumber,
+        pageSize: this.pageSize,
+        name: state.name,
+        userName: state.userName,
+        email: state.email,
+        role: state.role,
+        isActive: state.isActive,
+      })
+      .pipe(
+        tap((response: ApiResponse<PagedResponse<UserResponse>>) => {
+          const data = response.data;
+          this.users.set(data?.items ?? []);
+          this.totalPages.set(data?.totalPages ?? 0);
+          this.currentPage.set(data?.pageNumber ?? state.pageNumber);
+        }),
+        map(() => void 0),
+        finalize(() => this.loading.set(false)),
+      );
+  }
+
   onPageChange(pageNumber: number): void {
     void this.syncQueryParams({
       pageNumber,
@@ -109,6 +128,7 @@ export class UsersList implements OnInit {
           return { state };
         }),
         distinctUntilChanged(
+          // Custom comparison to prevent unnecessary reloads when query params haven't meaningfully changed
           (prev, curr) =>
             prev.state.pageNumber === curr.state.pageNumber &&
             prev.state.name === curr.state.name &&
@@ -117,6 +137,7 @@ export class UsersList implements OnInit {
             prev.state.role === curr.state.role &&
             prev.state.isActive === curr.state.isActive,
         ),
+        // Update form controls with the current query params without emitting valueChanges events
         tap(({ state }) => {
           this.currentPage.set(state.pageNumber);
           if (this.nameControl.value !== (state.name ?? '')) {
@@ -197,32 +218,6 @@ export class UsersList implements OnInit {
     });
   }
 
-  private loadUsers(state: UsersListQueryState) {
-    this.loading.set(true);
-    this.errorMessage.set(null);
-
-    return this.userService
-      .getUsers({
-        pageNumber: state.pageNumber,
-        pageSize: this.pageSize,
-        name: state.name,
-        userName: state.userName,
-        email: state.email,
-        role: state.role,
-        isActive: state.isActive,
-      })
-      .pipe(
-        tap((response: ApiResponse<PagedResponse<UserResponse>>) => {
-          const data = response.data;
-          this.users.set(data?.items ?? []);
-          this.totalPages.set(data?.totalPages ?? 0);
-          this.currentPage.set(data?.pageNumber ?? state.pageNumber);
-        }),
-        map(() => void 0),
-        finalize(() => this.loading.set(false)),
-      );
-  }
-
   // Utility methods for query param normalization and parsing
   private normalizeQueryState(
     pageNumberValue: string | null,
@@ -254,6 +249,7 @@ export class UsersList implements OnInit {
     return null;
   }
 
+  // Syncs the current query state to the URL query parameters
   private async syncQueryParams(state: UsersListQueryState, replaceUrl = false): Promise<void> {
     await this.router.navigate([], {
       relativeTo: this.route,
@@ -265,6 +261,7 @@ export class UsersList implements OnInit {
         role: state.role || null,
         isActive: state.isActive,
       },
+      queryParamsHandling: 'merge',
       replaceUrl,
     });
   }

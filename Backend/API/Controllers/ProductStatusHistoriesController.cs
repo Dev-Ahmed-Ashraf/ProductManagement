@@ -31,7 +31,7 @@ namespace DBS_Task.API.Controllers
         {
             var query = new GetProductStatusHistoriesQuery(request);
             var response = await _mediator.Send(query);
-            return StatusCode((int)response.StatusCode, response);
+            return StatusCode((int)response.statusCode, response);
         }
     }
 }

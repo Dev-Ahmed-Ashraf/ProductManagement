@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Interfaces;
+﻿using DBS_Task.Application.Common.Exceptions;
+using DBS_Task.Application.Common.Interfaces;
 using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.Auth;
 using DBS_Task.Domain.Entities;
@@ -26,10 +27,10 @@ namespace DBS_Task.Application.CQRS.Auth.Commands.Login
             var user = await _userManager.FindByEmailAsync(request.LoginRequest.Email);
 
             if (user is null || !await _userManager.CheckPasswordAsync(user, request.LoginRequest.Password)) 
-                return ApiResponse<LoginResponseDto>.FailureResponse("Invalid email or password.", 400);
-        
-            if(!user.IsActive)
-                return ApiResponse<LoginResponseDto>.FailureResponse("User account is inactive. Please contact support.", 400);
+                throw new UnauthorizedException("Invalid email or password. Please try again.");
+
+            if (!user.IsActive)
+                throw new ForbiddenException("User account is inactive. Please contact support.");
 
             var result = await _jWTService.GenerateTokenAsync(user);
                            
@@ -46,7 +47,7 @@ namespace DBS_Task.Application.CQRS.Auth.Commands.Login
                 refreshTokenExpiresAt = result.RefreshTokenExpiresAt
             };
 
-            return ApiResponse<LoginResponseDto>.SuccessResponse(response, 200, "User logged in successfully.");
+            return ApiResponse<LoginResponseDto>.SuccessResponse(response, StatusCodes.Status200OK, "User logged in successfully.");
         }
     }
 }

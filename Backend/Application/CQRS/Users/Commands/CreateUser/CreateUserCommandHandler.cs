@@ -1,4 +1,5 @@
 ﻿using DBS_Task.Application.Common.Results;
+using DBS_Task.Application.Common.Exceptions;
 using DBS_Task.Application.DTOs.User;
 using DBS_Task.Domain.Entities;
 using MediatR;
@@ -22,13 +23,13 @@ namespace DBS_Task.Application.CQRS.Users.Commands.CreateUser
             var existingEmail = await _userManager.FindByEmailAsync(request.UserContract.Email);
             if (existingEmail is not null)
             {
-                return ApiResponse<CreateUserResponseDto>.FailureResponse("Email is already in use.", 400);
+                throw new BadRequestException("Email is already in use.");
             }
 
             var existingRole = await _roleManager.RoleExistsAsync(request.UserContract.Role);
             if (!existingRole)
             {
-                return ApiResponse<CreateUserResponseDto>.FailureResponse("Role does not exist.", 400);
+                throw new BadRequestException($"Role '{request.UserContract.Role}' does not exist.");
             }
 
             var user = new ApplicationUser
@@ -42,8 +43,7 @@ namespace DBS_Task.Application.CQRS.Users.Commands.CreateUser
 
             if (!result.Succeeded)
             {
-                var errors = result.Errors.Select(e => e.Description).ToList();
-                return ApiResponse<CreateUserResponseDto>.FailureResponse("Failed to create user.", 400, errors);
+                throw new BadRequestException("Failed to create user.");
             }
 
             await _userManager.AddToRoleAsync(user, request.UserContract.Role);

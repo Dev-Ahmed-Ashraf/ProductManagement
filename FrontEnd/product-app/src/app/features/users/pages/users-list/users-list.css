@@ -177,7 +177,7 @@
 }
 
 .users-table__body {
-  /* Responsive table body styling */
+  background: white;
 }
 
 .users-table__row {

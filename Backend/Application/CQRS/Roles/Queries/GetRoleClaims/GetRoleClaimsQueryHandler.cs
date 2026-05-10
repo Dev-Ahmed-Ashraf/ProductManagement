@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Results;
+﻿using DBS_Task.Application.Common.Exceptions;
+using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.Roles;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,7 @@ namespace DBS_Task.Application.CQRS.Roles.Queries.GetRoleClaims
            var role = await _roleManager.FindByIdAsync(request.RoleId);
             if (role is null)
             {
-                return ApiResponse<List<RoleClaimResponse>>.FailureResponse("Role not found", 404);
+                throw new NotFoundException($"Role with ID {request.RoleId} was not found.");
             }
             var claims = await _roleManager.GetClaimsAsync(role);
 

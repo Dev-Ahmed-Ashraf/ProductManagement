@@ -81,6 +81,10 @@ export class Login implements OnInit {
           );
           void this.router.navigate(['/dashboard']);
         },
+        error: (error) => {
+          const errorMessage = error?.error?.message;
+          this.alert.error(errorMessage, 'Login failed');
+        },
       });
   }
 }

@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Interfaces;
+﻿using DBS_Task.Application.Common.Exceptions;
+using DBS_Task.Application.Common.Interfaces;
 using DBS_Task.Application.Common.Results;
 using DBS_Task.Infrastructure.Data.DBContext;
 using MediatR;
@@ -22,13 +23,13 @@ namespace DBS_Task.Application.CQRS.Auth.Commands.Logout
 
             var userId = _currentUser.UserId;
             if (token.UserId != userId)
-                return ApiResponse<bool>.FailureResponse("Unauthorized", 401);
+                throw new UnauthorizedException();
 
             if (token is null)
-                return ApiResponse<bool>.FailureResponse("Refresh token not found", 404);
+                throw new NotFoundException("Refresh token not found");
 
             if (token.IsRevoked)
-                return ApiResponse<bool>.SuccessResponse(true, 200, "Already logged out");
+                throw new UnauthorizedException("Refresh token is already revoked");
 
             token.RevokedAt = DateTime.UtcNow;
 

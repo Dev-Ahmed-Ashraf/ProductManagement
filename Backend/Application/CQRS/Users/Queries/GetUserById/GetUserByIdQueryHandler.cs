@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Results;
+﻿using DBS_Task.Application.Common.Exceptions;
+using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.User;
 using DBS_Task.Infrastructure.Data.DBContext;
 using MediatR;
@@ -20,7 +21,7 @@ namespace DBS_Task.Application.CQRS.Users.Queries.GetUserById
 
             if (result is null)
             {
-                return ApiResponse<UserResponseDto>.FailureResponse("User not found", 404);
+                throw new NotFoundException($"User with ID {request.UserId} not found.");
             }
 
             var userResponse = new UserResponseDto

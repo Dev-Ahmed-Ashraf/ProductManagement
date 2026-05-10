@@ -69,7 +69,6 @@ export class UserDetails implements OnInit {
         },
         error: () => {
           this.user.set(null);
-          this.errorMessage.set('Failed to load user details.');
           this.loading.set(false);
         },
       });

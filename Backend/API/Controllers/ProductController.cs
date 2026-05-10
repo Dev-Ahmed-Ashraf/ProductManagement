@@ -39,7 +39,7 @@ namespace DBS_Task.API.Controllers
         {
             var command = new CreateProductCommand(contract);
             var product = await _mediator.Send(command);
-            return StatusCode((int)product.StatusCode, product);
+            return StatusCode((int)product.statusCode, product);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DBS_Task.API.Controllers
             var filters = new GetAllProductsQuery(query);
 
             var products = await _mediator.Send(filters);
-            return StatusCode((int)products.StatusCode, products);
+            return StatusCode((int)products.statusCode, products);
         }
 
         /// <summary>   
@@ -68,7 +68,7 @@ namespace DBS_Task.API.Controllers
         {
             var query = new GetByIdQuery(id);
             var product = await _mediator.Send(query);
-            return StatusCode((int)product.StatusCode, product);
+            return StatusCode((int)product.statusCode, product);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace DBS_Task.API.Controllers
             var command = new DeleteProductCommand(id);
             var result = await _mediator.Send(command);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int)result.statusCode, result);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace DBS_Task.API.Controllers
             var command = new ChangeProductStatusCommand(id, request.newStatus);
             var result = await _mediator.Send(command);
 
-            return StatusCode((int)result.StatusCode, result);  
+            return StatusCode((int)result.statusCode, result);  
         }
     }
 }

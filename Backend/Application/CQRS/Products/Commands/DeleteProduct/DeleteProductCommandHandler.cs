@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Results;
+﻿using DBS_Task.Application.Common.Exceptions;
+using DBS_Task.Application.Common.Results;
 using DBS_Task.Infrastructure.Data.DBContext;
 using MediatR;
 
@@ -18,7 +19,8 @@ namespace DBS_Task.Application.CQRS.Products.Commands.DeleteProduct
             var existingProduct = await _dbContext.Products.FindAsync(request.Id, cancellationToken);
             if (existingProduct == null)
             {
-                return ApiResponse<bool>.FailureResponse("Product not found or already deleted.", 404);
+                
+                throw new NotFoundException($"Product with ID {request.Id} not found.");
             }
 
             _dbContext.Products.Remove(existingProduct);

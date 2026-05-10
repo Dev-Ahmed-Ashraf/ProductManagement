@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth';
 
+// Guard to redirect users to the appropriate dashboard landing page based on their permissions
 const LANDING_ROUTES = [
   { route: '/dashboard/statistics', permission: 'statistics:view' },
   { route: '/dashboard/products', permission: 'products:view' },

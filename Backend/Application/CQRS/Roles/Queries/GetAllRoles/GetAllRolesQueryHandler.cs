@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DBS_Task.Application.Common.Exceptions;
 using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.Roles;
 using MediatR;
@@ -21,7 +22,7 @@ namespace DBS_Task.Application.CQRS.Roles.Queries.GetAllRoles
             var roles = await _roleManager.Roles.ToListAsync(cancellationToken);
             if (roles == null || roles.Count == 0)
             {
-                return ApiResponse<List<RoleResponse>>.FailureResponse("No roles found", 404);
+                throw new NotFoundException("No roles found");
             }
 
             var roleResponses = _mapper.Map<List<RoleResponse>>(roles);

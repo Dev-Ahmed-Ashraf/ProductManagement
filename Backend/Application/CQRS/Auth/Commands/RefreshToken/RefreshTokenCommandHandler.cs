@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Interfaces;
+﻿using DBS_Task.Application.Common.Exceptions;
+using DBS_Task.Application.Common.Interfaces;
 using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.Auth;
 using DBS_Task.Infrastructure.Data.DBContext;
@@ -25,10 +26,10 @@ namespace DBS_Task.Application.CQRS.Auth.Commands.RefreshToken
 
             if (storedToken is null)
             
-                return ApiResponse<LoginResponseDto>.FailureResponse("Invalid refresh token", 400);
+                throw new UnauthorizedException("Invalid refresh token");
             
             if (storedToken.IsRevoked || storedToken.IsExpired)
-                return ApiResponse<LoginResponseDto>.FailureResponse("Refresh token expired", 400);
+                throw new UnauthorizedException("Refresh token expired");
 
             // ROTATION
             storedToken.RevokedAt = DateTime.UtcNow;

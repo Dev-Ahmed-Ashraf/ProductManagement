@@ -6,5 +6,4 @@ export interface UserResponse {
   role: string;
   isActive: boolean;
   createdAt: Date;
-  createdBy: string;
 }

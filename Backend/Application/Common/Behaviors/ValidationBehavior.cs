@@ -1,4 +1,5 @@
 ﻿using DBS_Task.Application.Common.Results;
+using DBS_Task.Application.Common.Exceptions;
 using FluentValidation;
 using MediatR;
 
@@ -36,35 +37,11 @@ namespace DBS_Task.Application.Common.Behaviors
 
             if (failures.Any())
             {
-                var errors = failures
-                    .Select(f => f.ErrorMessage)
-                    .Distinct()
-                    .ToList();
-
-                var responseType = typeof(TResponse);
-
-                if (responseType.IsGenericType &&
-                    responseType.GetGenericTypeDefinition() == typeof(ApiResponse<>))
+                if (failures.Any())
                 {
-                    var dataType = responseType.GetGenericArguments()[0];
-
-                    var failureMethod = typeof(ApiResponse<>)
-                        .MakeGenericType(dataType)
-                        .GetMethod(nameof(ApiResponse<object>.FailureResponse));
-
-                    var result = failureMethod!.Invoke(null, new object[]
-                    {
-                    "Validation Failed",
-                    400,
-                    errors
-                    });
-
-                    return (TResponse)result!;
+                    throw new ValidationException(failures);
                 }
-
-                throw new ValidationException(failures);
             }
-
             return await next();
         }
     }

@@ -1,4 +1,5 @@
-﻿using DBS_Task.Application.Common.Results;
+﻿using DBS_Task.Application.Common.Exceptions;
+using DBS_Task.Application.Common.Results;
 using DBS_Task.Application.DTOs.Product;
 using DBS_Task.Application.DTOs.ProductStatusHistory;
 using DBS_Task.Infrastructure.Data.DBContext;
@@ -50,7 +51,7 @@ namespace DBS_Task.Application.CQRS.Products.Queries.GetProductById
 
             if (result == null)
             {
-                return ApiResponse<ProductWHistoryResponseDto>.FailureResponse("Product not found", 404);
+                throw new NotFoundException($"Product with ID {request.Id} not found.");
             }
 
 
