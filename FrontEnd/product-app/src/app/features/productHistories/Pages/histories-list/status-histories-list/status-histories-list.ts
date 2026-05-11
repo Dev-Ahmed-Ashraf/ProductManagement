@@ -45,7 +45,7 @@ export class StatusHistoriesList implements OnInit {
   private readonly errorHandler = inject(ErrorHandlerService);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly pageSize = 10;
+  readonly pageSize = 8;
 
   readonly productIdControl = new FormControl('', { nonNullable: true });
   readonly oldStatusControl = new FormControl('', { nonNullable: true });

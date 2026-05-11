@@ -28,7 +28,7 @@ export const PRODUCT_FEATURES: ProductFeatureItem[] = [
     title: 'Status Histories',
     route: '/dashboard/product-histories',
     permission: 'product-status-histories:view',
-    icon: 'status',
+    icon: 'list',
   },
 ];
 

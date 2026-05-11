@@ -42,7 +42,7 @@ export class UsersList implements OnInit {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly pageSize = 10;
+  readonly pageSize = 8;
 
   // Form Controls
   readonly nameControl = new FormControl('', { nonNullable: true });

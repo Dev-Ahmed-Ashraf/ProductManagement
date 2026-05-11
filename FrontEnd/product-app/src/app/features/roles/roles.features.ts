@@ -2,7 +2,7 @@ export interface RolesFeatureItem {
   title: string;
   route: string;
   permission: string;
-  icon?: 'list' | 'plus' | 'status';
+  icon?: 'list';
 }
 
 export const ROLES_FEATURES: RolesFeatureItem[] = [
@@ -16,6 +16,6 @@ export const ROLES_FEATURES: RolesFeatureItem[] = [
     title: 'Role Claims',
     route: '/dashboard/role-claims',
     permission: 'roles:view',
-    icon: 'status',
+    icon: 'list',
   },
 ];

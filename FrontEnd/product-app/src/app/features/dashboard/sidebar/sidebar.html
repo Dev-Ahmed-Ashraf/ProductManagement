@@ -7,23 +7,30 @@
 
 	@if (hasVisibleFeatures()) {
 		<nav class="space-y-2" aria-label="Workspace navigation">
-			@for (feature of visibleFeatures(); track trackByRoute($index, feature)) {
-				<a
-					[routerLink]="feature.route"
-					routerLinkActive="border-teal-400 bg-slate-900 text-white shadow-[0_16px_30px_rgba(15,23,42,0.35)]"
-					[routerLinkActiveOptions]="{ exact: false }"
-					class="group flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-300 transition hover:border-slate-700 hover:bg-slate-900 hover:text-white"
-				>
-					<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-teal-300 transition group-hover:bg-teal-400/10 group-hover:text-teal-200">
-						<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-							<path [attr.d]="iconFor(feature.icon ?? '')" />
-						</svg>
-					</span>
-					<div class="min-w-0">
-						<span class="block truncate text-sm font-medium">{{ feature.title }}</span>
-						<span class="block text-xs text-slate-500 group-hover:text-slate-300">Open module</span>
+			@for (group of groupedFeatures(); track groupTrack($index, group)) {
+				<div class="pt-3">
+					<div class="px-4 mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{{ group.label }}</div>
+					<div class="space-y-2">
+						@for (feature of group.items; track trackByRoute($index, feature)) {
+							<a
+								[routerLink]="feature.route"
+								routerLinkActive="border-teal-400 bg-slate-900 text-white shadow-[0_16px_30px_rgba(15,23,42,0.35)]"
+								[routerLinkActiveOptions]="{ exact: false }"
+								class="group flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-300 transition hover:border-slate-700 hover:bg-slate-900 hover:text-white"
+							>
+								<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-teal-300 transition group-hover:bg-teal-400/10 group-hover:text-teal-200">
+									<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+										<path [attr.d]="iconFor(feature.icon ?? '')" />
+									</svg>
+								</span>
+								<div class="min-w-0">
+									<span class="block truncate text-sm font-medium">{{ feature.title }}</span>
+									<span class="block text-xs text-slate-500 group-hover:text-slate-300">Open module</span>
+								</div>
+							</a>
+						}
 					</div>
-				</a>
+				</div>
 			}
 		</nav>
 	}

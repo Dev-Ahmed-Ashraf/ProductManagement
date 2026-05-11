@@ -40,20 +40,6 @@ public class ExceptionHandlingMiddleware
 
         switch (exception)
         {
-            case ValidationException validationException:
-
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-
-                response = ApiResponse<object>.FailureResponse(
-                    message: "Validation Failed",
-                    statusCode: StatusCodes.Status400BadRequest,
-                    errors: validationException.Errors
-                        .Select(e => e.ErrorMessage)
-                        .Distinct()
-                        .ToList());
-
-                break;
-
             case NotFoundException:
 
                 context.Response.StatusCode = StatusCodes.Status404NotFound;

@@ -27,10 +27,57 @@ export class DashboardSidebar {
 
     return allFeatures.filter((feature) => permissions.has(feature.permission.toLowerCase()));
   });
-  readonly hasVisibleFeatures = computed(() => this.visibleFeatures().length > 0);
+  readonly groupedFeatures = computed(() => {
+    const permissions = this.permissions();
+
+    const all = [...PRODUCT_FEATURES, ...USERS_FEATURES, ...ROLES_FEATURES].filter((f) =>
+      permissions.has(f.permission.toLowerCase()),
+    );
+
+    const groups: { label: string; items: any[] }[] = [];
+
+    const pushGroup = (label: string, items: any[]) => {
+      if (items.length) groups.push({ label, items });
+    };
+
+    // Product-related groups
+    const productItems = all.filter((f) => f.route?.startsWith('/dashboard/products'));
+    const historyItems = all.filter((f) => f.route?.startsWith('/dashboard/product-histories'));
+    pushGroup('Products', productItems);
+    pushGroup('Histories', historyItems);
+
+    // Users and Roles
+    const userItems = all.filter((f) => f.route?.startsWith('/dashboard/users'));
+    const roleItems = all.filter((f) => f.route?.startsWith('/dashboard/roles'));
+    pushGroup('Users', userItems);
+    pushGroup('Roles', roleItems);
+
+    const roleClaimItems = all.filter((f) => f.route?.startsWith('/dashboard/role-claims'));
+    pushGroup('Role Claims', roleClaimItems);
+    // Any other items (fallback)
+    const other = all.filter(
+      (f) =>
+        !productItems.includes(f) &&
+        !historyItems.includes(f) &&
+        !userItems.includes(f) &&
+        !roleItems.includes(f) &&
+        !roleClaimItems.includes(f),
+    );
+    pushGroup('Other', other);
+
+    return groups;
+  });
+
+  readonly hasVisibleFeatures = computed(() =>
+    this.groupedFeatures().some((g) => g.items.length > 0),
+  );
 
   trackByRoute(_: number, feature: { route: string }): string {
     return feature.route;
+  }
+
+  groupTrack(_: number, group: { label: string }): string {
+    return group.label;
   }
 
   iconFor(icon: string): string {
